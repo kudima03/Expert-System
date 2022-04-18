@@ -1,0 +1,480 @@
+﻿using ClassLibraryForTCPConnectionAPI_C_sharp_;
+using DatabaseEntities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+
+namespace TCPConnectionAPI_C_sharp_
+{
+    public class Server
+    {
+        protected IServerProtocol _protocol;
+
+        protected ICollection<ConnectedUserInfo> _connectedUsers;
+
+        protected IUserModifyPermission serverAccessPermission;
+
+        protected virtual int Registration(ref ConnectedUserInfo user)
+        {
+            user.Type = _protocol.ReceiveTypeOfUser(user.ConnectionSocket);
+            string login = _protocol.ReceiveLogin(user.ConnectionSocket);
+            string password = _protocol.ReceivePassword(user.ConnectionSocket);
+            float rateWeight = 0;
+            if (user.Type == TypeOfUser.Expert)
+            {
+                rateWeight = float.Parse(_protocol.ReceiveString(user.ConnectionSocket));
+            }
+            switch (user.Type)
+            {
+                case TypeOfUser.Admin:
+                    return serverAccessPermission.CreateAdmin(new Admin(login, password));
+                case TypeOfUser.Client:
+                    return serverAccessPermission.CreateClient(new Client(login, password));
+                case TypeOfUser.Expert:
+                    return serverAccessPermission.CreateExpert(new Expert(login, password, rateWeight));
+                case TypeOfUser.Undefined:
+                    return 0;
+                default:
+                    return 0;
+            }
+        }
+
+        protected virtual int Authorization(ref ConnectedUserInfo user)
+        {
+            string login = _protocol.ReceiveLogin(user.ConnectionSocket);
+            string password = _protocol.ReceivePassword(user.ConnectionSocket);
+
+            var admins = serverAccessPermission.FindAdminsWhere(c => c.Login == login);
+            if (admins.Count == 0) { user.Type = TypeOfUser.Undefined; }
+            else
+            {
+                var admin = admins.First();
+                if (admin.Id > 0 && admin.Password == password && admin.UserStatus == Status.NotBanned)
+                { user.Type = TypeOfUser.Admin; return admin.Id; }
+            }
+
+            var clients = serverAccessPermission.FindClientsWhere(c => c.Login == login);
+            if (clients.Count == 0) { user.Type = TypeOfUser.Undefined; }
+            else
+            {
+                var client = clients.First();
+                if (client.Id > 0 && client.Password == password && client.UserStatus == Status.NotBanned)
+                { user.Type = TypeOfUser.Client; return client.Id; }
+            }
+
+
+            var experts = serverAccessPermission.FindExpertsWhere(c => c.Login == login);
+            if (experts.Count == 0) { user.Type = TypeOfUser.Undefined; }
+            else
+            {
+                var expert = experts.First();
+                if (expert.Id > 0 && expert.Password == password && expert.UserStatus == Status.NotBanned)
+                { user.Type = TypeOfUser.Expert; return expert.Id; }
+                user.Type = TypeOfUser.Undefined;
+                return 0;
+            }
+            user.Type = TypeOfUser.Undefined;
+            return 0;
+        }
+
+        protected virtual int Validation(ref ConnectedUserInfo user)
+        {
+            while (true)
+            {
+                switch (_protocol.ReceiveCommand(user.ConnectionSocket))
+                {
+                    case CommandsToServer.Registration:
+                        {
+                            int id = Registration(ref user);
+                            if (id > 0)
+                            {
+                                _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                return id;
+                            }
+                            else
+                            {
+                                _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                continue;
+                            }
+                        }
+                    case CommandsToServer.Authorization:
+                        {
+                            int id = Authorization(ref user);
+                            _protocol.SendTypeOfUser(user.Type, user.ConnectionSocket);
+                            if(id > 0)
+                            {
+                                return id;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                            
+                        }
+                    case CommandsToServer.PreviousRoom:
+                        {
+                            return 0;
+                        }
+                    default:
+                        {
+                            _protocol.SendAnswerFromServer(AnswerFromServer.UnknownCommand, user.ConnectionSocket);
+                            return 0;
+                        }
+                }
+            }
+        }
+
+        protected virtual void UserHandler(object client)
+        {
+            ConnectedUserInfo user = client as ConnectedUserInfo;
+            while (true)
+            {
+                user.DB_Id = Validation(ref user);
+                if (user.DB_Id <= 0) { Console.WriteLine("Client disconnected"); user.ConnectionSocket.Close(); return; }
+                switch (user.Type)
+                {
+                    case TypeOfUser.Admin:
+                        { AdminHandler(user); break; }
+                    case TypeOfUser.Client:
+                        { ClientHandler(user); break; }
+                    case TypeOfUser.Expert:
+                        { ExpertHandler(user); break; }
+                    default:
+                        break;
+                }
+            }
+        }
+
+        protected virtual void ClientHandler(ConnectedUserInfo user)
+        {
+            var client = serverAccessPermission.FindClientsWhere(c => c.Id == user.DB_Id).First();
+            client.IsOnline = true;
+            serverAccessPermission.UpdateClient(client);
+            using (IClientAbilityProtocol clientProtocol = new ClientAbilityProtocol())
+            {
+                while (true)
+                {
+                    switch (_protocol.ReceiveCommand(user.ConnectionSocket))
+                    {
+                        case CommandsToServer.FindVehiclesByModel:
+                            {
+                                var param = _protocol.ReceiveString(user.ConnectionSocket);
+                                _protocol.SendCollection(clientProtocol.FindVehiclesWhere(c => c.Model == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByDealer:
+                            {
+                                var param = _protocol.ReceiveString(user.ConnectionSocket);
+                                _protocol.SendCollection(clientProtocol.FindVehiclesWhere(c => c.Dealer == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByColour:
+                            {
+                                var param = _protocol.ReceiveString(user.ConnectionSocket);
+                                _protocol.SendCollection(clientProtocol.FindVehiclesWhere(c => c.Colour == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByRegistrationNumber:
+                            {
+                                var param = _protocol.ReceiveString(user.ConnectionSocket);
+                                _protocol.SendCollection(clientProtocol.FindVehiclesWhere(c => c.RegistrationNumber == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByRate:
+                            {
+                                var param = float.Parse(_protocol.ReceiveString(user.ConnectionSocket));
+                                _protocol.SendCollection(clientProtocol.FindVehiclesWhere(c => c.TotalRate == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.PreviousRoom:
+                            {
+                                var disconnectingUser = serverAccessPermission.FindClientsWhere(c => c.Id == user.DB_Id).First();
+                                disconnectingUser.IsOnline = false;
+                                serverAccessPermission.UpdateClient(disconnectingUser);
+                                return;
+                            }
+                        default:
+                            {
+                                _protocol.SendAnswerFromServer(AnswerFromServer.UnknownCommand, user.ConnectionSocket);
+                                break;
+                            }
+                    }
+                }
+            }
+        }
+
+        protected virtual void AdminHandler(ConnectedUserInfo user)
+        {
+            var admin = serverAccessPermission.FindAdminsWhere(c => c.Id == user.DB_Id).First();
+            admin.IsOnline = true;
+            serverAccessPermission.UpdateAdmin(admin);
+            using (IAdminAbilityProtocol adminProtocol = new AdminAbilityProtocol())
+            {
+                while (true)
+                {
+                    switch (_protocol.ReceiveCommand(user.ConnectionSocket))
+                    {
+                        case CommandsToServer.CreateVehicle:
+                            {
+                                if (adminProtocol.CreateVehicle(_protocol.ReceiveObject<Vehicle>(user.ConnectionSocket)))
+                                    _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else
+                                    _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.ModifyVehicle:
+                            {
+                                if (adminProtocol.ModifyVehicle(_protocol.ReceiveObject<Vehicle>(user.ConnectionSocket)))
+                                    _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else
+                                    _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.DeleteVehicle:
+                            {
+                                int id = int.Parse(_protocol.ReceiveString(user.ConnectionSocket));
+                                if (adminProtocol.DeleteVehiclesWhere(c => c.Id == id))
+                                    _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else
+                                    _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByModel:
+                            {
+                                var param = _protocol.ReceiveString(user.ConnectionSocket);
+                                _protocol.SendCollection(adminProtocol.FindVehiclesWhere(c => c.Model == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByDealer:
+                            {
+                                var param = _protocol.ReceiveString(user.ConnectionSocket);
+                                _protocol.SendCollection(adminProtocol.FindVehiclesWhere(c => c.Dealer == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByColour:
+                            {
+                                var param = _protocol.ReceiveString(user.ConnectionSocket);
+                                _protocol.SendCollection(adminProtocol.FindVehiclesWhere(c => c.Colour == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByRegistrationNumber:
+                            {
+                                var param = _protocol.ReceiveString(user.ConnectionSocket);
+                                _protocol.SendCollection(adminProtocol.FindVehiclesWhere(c => c.RegistrationNumber == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByRate:
+                            {
+                                var param = float.Parse(_protocol.ReceiveString(user.ConnectionSocket));
+                                _protocol.SendCollection(adminProtocol.FindVehiclesWhere(c => c.TotalRate == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.GetAllVehicles:
+                            {
+                                _protocol.SendCollection(adminProtocol.FindVehiclesWhere(c => c != null), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.GetAllClients:
+                            {
+                                _protocol.SendCollection(adminProtocol.FindClientsWhere(c => c != null), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.GetAllExperts:
+                            {
+                                _protocol.SendCollection(adminProtocol.FindExpertsWhere(c => c != null), user.ConnectionSocket);
+
+                                break;
+                            }
+                        case CommandsToServer.RegisterNewUser:
+                            {
+                                var userType = _protocol.ReceiveTypeOfUser(user.ConnectionSocket);
+                                var login = _protocol.ReceiveLogin(user.ConnectionSocket);
+                                var password = _protocol.ReceivePassword(user.ConnectionSocket);
+                                float rateWeight = 0.0F;
+                                if (userType == TypeOfUser.Expert) { rateWeight = float.Parse(_protocol.ReceiveString(user.ConnectionSocket)); };
+                                var res = adminProtocol.RegisterNewUser(userType, login, password, rateWeight);
+                                if (res > 0) _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.BanClient:
+                            {
+                                var login = _protocol.ReceiveLogin(user.ConnectionSocket);
+                                var res = adminProtocol.BanClientsWhere(a => a.Login == login);
+                                if (res) _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.BanExpert:
+                            {
+                                var login = _protocol.ReceiveLogin(user.ConnectionSocket);
+                                var res = adminProtocol.BanExpertsWhere(a => a.Login == login);
+                                if (res) _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.UnbanClient:
+                            {
+                                var login = _protocol.ReceiveLogin(user.ConnectionSocket);
+                                var res = adminProtocol.UnbanClientsWhere(a => a.Login == login);
+                                if (res) _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.UnbanExpert:
+                            {
+                                var login = _protocol.ReceiveLogin(user.ConnectionSocket);
+                                var res = adminProtocol.UnbanExpertsWhere(a => a.Login == login);
+                                if (res) _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.DeleteClient:
+                            {
+                                var login = _protocol.ReceiveLogin(user.ConnectionSocket);
+                                var res = adminProtocol.DeleteClientsWhere(a => a.Login == login);
+                                if (res) _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.DeleteExpert:
+                            {
+                                var login = _protocol.ReceiveLogin(user.ConnectionSocket);
+                                var res = adminProtocol.DeleteExpertsWhere(a => a.Login == login);
+                                if (res) _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.CreateReportAboutVehicles:
+                            {
+                                _protocol.SendString(adminProtocol.CreateReportAboutVehicles(), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindAdminByLogin:
+                            {
+                                var login = _protocol.ReceiveLogin(user.ConnectionSocket);
+                                _protocol.SendCollection(adminProtocol.FindAdminsWhere(c => c.Login == login), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindClientByLogin:
+                            {
+                                var login = _protocol.ReceiveLogin(user.ConnectionSocket);
+                                _protocol.SendCollection(adminProtocol.FindClientsWhere(c => c.Login == login), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindExpertByLogin:
+                            {
+                                var login = _protocol.ReceiveLogin(user.ConnectionSocket);
+                                _protocol.SendCollection(adminProtocol.FindExpertsWhere(c => c.Login == login), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.PreviousRoom:
+                            {
+                                var adm = serverAccessPermission.FindAdminsWhere(c => c.Id == user.DB_Id).First();
+                                adm.IsOnline = false;
+                                serverAccessPermission.UpdateAdmin(adm);
+                                return;
+                            }
+                        default:
+                            {
+                                _protocol.SendAnswerFromServer(AnswerFromServer.UnknownCommand, user.ConnectionSocket);
+                                break;
+                            }
+                    }
+                }
+            }
+        }
+
+        protected virtual void ExpertHandler(ConnectedUserInfo user)
+        {
+            var expert = serverAccessPermission.FindExpertsWhere(c => c.Id == user.DB_Id).First();
+            expert.IsOnline = true;
+            serverAccessPermission.UpdateExpert(expert);
+            using (IExpertAbilityProtocol expertProtocol = new ExpertAbilityProtocol())
+            {
+                while (true)
+                {
+                    switch (_protocol.ReceiveCommand(user.ConnectionSocket))
+                    {
+                        case CommandsToServer.FindVehiclesByModel:
+                            {
+                                var param = _protocol.ReceiveString(user.ConnectionSocket);
+                                _protocol.SendCollection(expertProtocol.FindVehiclesWhere(c => c.Model == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByDealer:
+                            {
+                                var param = _protocol.ReceiveString(user.ConnectionSocket);
+                                _protocol.SendCollection(expertProtocol.FindVehiclesWhere(c => c.Dealer == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByColour:
+                            {
+                                var param = _protocol.ReceiveString(user.ConnectionSocket);
+                                _protocol.SendCollection(expertProtocol.FindVehiclesWhere(c => c.Colour == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByRegistrationNumber:
+                            {
+                                var param = _protocol.ReceiveString(user.ConnectionSocket);
+                                _protocol.SendCollection(expertProtocol.FindVehiclesWhere(c => c.RegistrationNumber == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.FindVehiclesByRate:
+                            {
+                                var param = float.Parse(_protocol.ReceiveString(user.ConnectionSocket));
+                                _protocol.SendCollection(expertProtocol.FindVehiclesWhere(c => c.TotalRate == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.RateVehicle:
+                            {
+                                int entityId = int.Parse(_protocol.ReceiveString(user.ConnectionSocket));
+                                float expertRate = float.Parse(_protocol.ReceiveString(user.ConnectionSocket));
+                                var buf = expertProtocol.FindVehiclesWhere(c => c.Id == entityId)[0];
+                                if (expertProtocol.Rate(buf, serverAccessPermission.FindExpertsWhere(c => c.Id == user.DB_Id)[0], expertRate))
+                                    _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.GetAllVehicles:
+                            {
+                                _protocol.SendCollection(expertProtocol.FindVehiclesWhere(c => c != null), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.PreviousRoom:
+                            {
+                                var client = serverAccessPermission.FindExpertsWhere(c => c.Id == user.DB_Id).First();
+                                client.IsOnline = false;
+                                serverAccessPermission.UpdateExpert(client);
+                                return;
+                            }
+                        default:
+                            {
+                                _protocol.SendAnswerFromServer(AnswerFromServer.UnknownCommand, user.ConnectionSocket);
+                                break;
+                            }
+                    }
+                }
+            }
+        }
+
+        public Server()
+        {
+            _protocol = new TCPServerProtocol();
+            _connectedUsers = new List<ConnectedUserInfo>();
+            serverAccessPermission = new DatabaseContext();
+        }
+
+        public void openConnection()
+        {
+            while (true)
+            {
+                ConnectedUserInfo connectedUserInfo = new ConnectedUserInfo();
+                connectedUserInfo.ConnectionSocket = _protocol.AcceptConnectionRequest();
+                Console.WriteLine("Подключился новый пользователь!");
+                ThreadPool.QueueUserWorkItem(UserHandler, connectedUserInfo);
+            }
+        }
+    }
+}

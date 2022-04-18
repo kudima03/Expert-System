@@ -1,0 +1,74 @@
+﻿<Window x:Class="UserApp_.NET_Framework_.FindVehicleByTotalRating"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UserApp_.NET_Framework_"
+        mc:Ignorable="d"
+        Title="FindVehicleByTotalRating" Height="450" Width="700">
+    <Window.Background>
+        <ImageBrush ImageSource="Resources/background.jpg"/>
+    </Window.Background>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition MinHeight="120"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MaxWidth="20"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition MinWidth="400"></ColumnDefinition>
+            <ColumnDefinition Width="130"></ColumnDefinition>
+            <ColumnDefinition MaxWidth="80"></ColumnDefinition>
+            <ColumnDefinition MaxWidth="20"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" FontWeight="Bold" Foreground="White" FontSize="40">Поиск по рейтингу</TextBlock>
+        <TextBox PreviewMouseDown="TotalRateInput_PreviewMouseDown" Style="{DynamicResource TextBoxStyleInput}"  FontSize="16" MinWidth="400" HorizontalAlignment="Left" VerticalAlignment="Center" MinHeight="40" Name="TotalRateInput" Grid.Row="2" Grid.Column="2" Padding="3 5" Text="Введите рейтинг" Background="White"></TextBox>
+        <Button Style="{DynamicResource ButtonStyleSubmit}" MaxHeight="40" Grid.Row="2" Grid.Column="3" MaxWidth="20" Click="FindVehicle_Click" Cursor="Hand" Background="White" Content="Найти" MinWidth="80" BorderBrush="White"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Row="3" Grid.Column="2">
+            <StackPanel VerticalAlignment="Top" Orientation="Vertical" Width="380" HorizontalAlignment="Left">
+                <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="110"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Grid.Row="0" Source="Resources/defaultPhoto.png"/>
+                        <ListBox Grid.Row="0" Grid.Column="1">
+                            <ListBoxItem>
+                                <TextBlock Text="Дилер"></TextBlock>
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <TextBlock Text="Модель"></TextBlock>
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <TextBlock Text="Цвет"></TextBlock>
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <TextBlock Text="Регистрационный номер"></TextBlock>
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <TextBlock Text="Рейтинг"></TextBlock>
+                            </ListBoxItem>
+                        </ListBox>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        <Button Style= "{DynamicResource ButtonStyleGoBack}" Grid.Column="1" Grid.Row="3" Cursor="Hand" FontSize="40" Foreground="White" Content="«" Name="GoBack" Click="GoBack_Click" RenderTransformOrigin="0.5,0.5" MaxHeight="50" MaxWidth="30" Margin="0,64,0,0" Grid.RowSpan="2">
+            <Button.Background>
+                <SolidColorBrush Color="Transparent"></SolidColorBrush>
+            </Button.Background>
+            <Button.BorderBrush>
+                <SolidColorBrush Color="Transparent"></SolidColorBrush>
+            </Button.BorderBrush>
+        </Button>
+    </Grid>
+</Window>
