@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,20 +42,22 @@ namespace UserApp_.NET_Framework_
 
         private void FindUser_Click(object sender, RoutedEventArgs e)
         {
-            /*var client = module.FindClientByLogin(LoginInput.Text);
+            var client = module.FindClientByLogin(UserLoginInput.Text);
             if (client.Login == "empty")
             {
                 MessageBox.Show("Не найден!");
             }
             else
             {
-               
-            }       */    
-        }
-
-        private void FindVehicle_Click(object sender, RoutedEventArgs e)
-        {
-
+                MemoryStream ms = new MemoryStream();
+                client.Photo.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                ms.Seek(0, SeekOrigin.Begin);
+                image.StreamSource = ms;
+                image.EndInit();
+                ImageBox.Source = image;
+            }
         }
 
         private void UserLoginInput_PreviewMouseDown(object sender, MouseButtonEventArgs e)

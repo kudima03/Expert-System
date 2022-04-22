@@ -18,21 +18,23 @@ namespace TCPConnectionAPI_C_sharp_
         protected virtual int Registration(ref ConnectedUserInfo user)
         {
             user.Type = _protocol.ReceiveTypeOfUser(user.ConnectionSocket);
-            string login = _protocol.ReceiveLogin(user.ConnectionSocket);
-            string password = _protocol.ReceivePassword(user.ConnectionSocket);
-            float rateWeight = 0;
-            if (user.Type == TypeOfUser.Expert)
-            {
-                rateWeight = float.Parse(_protocol.ReceiveString(user.ConnectionSocket));
-            }
             switch (user.Type)
             {
                 case TypeOfUser.Admin:
-                    return serverAccessPermission.CreateAdmin(new Admin(login, password));
+                    {
+                        var obj = _protocol.ReceiveObject<Admin>(user.ConnectionSocket);
+                        return serverAccessPermission.CreateAdmin(obj);
+                    }
                 case TypeOfUser.Client:
-                    return serverAccessPermission.CreateClient(new Client(login, password));
+                    {
+                        var obj = _protocol.ReceiveObject<Client>(user.ConnectionSocket);
+                        return serverAccessPermission.CreateClient(obj);
+                    }
                 case TypeOfUser.Expert:
-                    return serverAccessPermission.CreateExpert(new Expert(login, password, rateWeight));
+                    {
+                        var obj = _protocol.ReceiveObject<Expert>(user.ConnectionSocket);
+                        return serverAccessPermission.CreateExpert(obj);
+                    }
                 case TypeOfUser.Undefined:
                     return 0;
                 default:
@@ -288,14 +290,37 @@ namespace TCPConnectionAPI_C_sharp_
                             }
                         case CommandsToServer.RegisterNewUser:
                             {
-                                var userType = _protocol.ReceiveTypeOfUser(user.ConnectionSocket);
-                                var login = _protocol.ReceiveLogin(user.ConnectionSocket);
-                                var password = _protocol.ReceivePassword(user.ConnectionSocket);
-                                float rateWeight = 0.0F;
-                                if (userType == TypeOfUser.Expert) { rateWeight = float.Parse(_protocol.ReceiveString(user.ConnectionSocket)); };
-                                var res = adminProtocol.RegisterNewUser(userType, login, password, rateWeight);
-                                if (res > 0) _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
-                                else _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                user.Type = _protocol.ReceiveTypeOfUser(user.ConnectionSocket);
+                                AnswerFromServer answer = AnswerFromServer.UnknownCommand; ;
+                                switch (user.Type)
+                                {
+                                    case TypeOfUser.Admin:
+                                        {
+                                            var obj = _protocol.ReceiveObject<Admin>(user.ConnectionSocket);
+                                            if (serverAccessPermission.CreateAdmin(obj) > 0) answer = AnswerFromServer.Successfully;
+                                            else answer = AnswerFromServer.Error;
+                                            break;
+                                        }
+                                    case TypeOfUser.Client:
+                                        {
+                                            var obj = _protocol.ReceiveObject<Client>(user.ConnectionSocket);
+                                            if (serverAccessPermission.CreateClient(obj) > 0) answer = AnswerFromServer.Successfully;
+                                            else answer = AnswerFromServer.Error;
+                                            break;
+                                        }
+                                    case TypeOfUser.Expert:
+                                        {
+                                            var obj = _protocol.ReceiveObject<Expert>(user.ConnectionSocket);
+                                            if (serverAccessPermission.CreateExpert(obj) > 0) answer = AnswerFromServer.Successfully;
+                                            else answer = AnswerFromServer.Error;
+                                            break;
+                                        }
+                                    default:
+                                        {
+                                            break;
+                                        }
+                                }
+                                _protocol.SendAnswerFromServer(answer, user.ConnectionSocket);
                                 break;
                             }
                         case CommandsToServer.BanClient:
