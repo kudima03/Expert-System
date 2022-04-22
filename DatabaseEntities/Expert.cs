@@ -82,6 +82,11 @@ namespace DatabaseEntities
             Photo = new Bitmap(ConfigurationManager.AppSettings.Get("defaultPhotoPath"));
         }
 
+        public Expert(string login, string password, Bitmap photo, double rateWeight = 0) : this(login, password, rateWeight)
+        {
+            Photo = photo;
+        }
+
         public bool Equals(Expert other)
         {
             return RateWeight == other.RateWeight && Login == other.Login

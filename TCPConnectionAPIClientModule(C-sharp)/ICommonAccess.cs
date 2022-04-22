@@ -10,7 +10,7 @@ namespace TCPConnectionAPIClientModule_C_sharp_
     public interface ICommonAccess
     {
         TypeOfUser Authorization(string login, string password);
-        AnswerFromServer Registration(TypeOfUser type, string login, string password, float expertWeight = 0);
+        AnswerFromServer Registration<T>(TypeOfUser type, T user) where T : class;
         void PreviousRoom();
     }
 }
