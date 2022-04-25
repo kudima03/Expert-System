@@ -34,7 +34,27 @@ namespace UserApp_.NET_Framework_
 
         private void FindUser_Click(object sender, RoutedEventArgs e)
         {
-
+            var answer = module.BanClientWith(LoginInput.Text);
+            switch (answer)
+            {
+                case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Successfully:
+                    {
+                        MessageBox.Show("Успешно!");
+                        break;
+                    }
+                case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Error:
+                    {
+                        MessageBox.Show("Ошибка!");
+                        break;
+                    }
+                case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.UnknownCommand:
+                    {
+                        MessageBox.Show("Ошибка!");
+                        break;
+                    }
+                default:
+                    break;
+            }
         }
 
         private void LoginInput_PreviewMouseDown(object sender, MouseButtonEventArgs e)

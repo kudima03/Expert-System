@@ -145,5 +145,15 @@ namespace TCPConnectionAPI_C_sharp_
         {
             return ReportCreator.CreateReportAboutVehicles();
         }
+
+        public bool ModifyExpert(Expert newVersion)
+        {
+            return dbContext.UpdateExpert(newVersion);
+        }
+
+        public bool ModifyClient(Client newVersion)
+        {
+            return dbContext.UpdateClient(newVersion);
+        }
     }
 }

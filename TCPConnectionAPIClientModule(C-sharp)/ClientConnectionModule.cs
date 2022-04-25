@@ -31,16 +31,11 @@ namespace TCPConnectionAPIClientModule_C_sharp_
             return protocol.ReceiveTypeOfUser();
         }
 
-        public AnswerFromServer Registration(TypeOfUser type, string login, string password, float expertWeight = 0)
+        public AnswerFromServer Registration<T>(TypeOfUser type, T user) where T : class
         {
             protocol.SendCommand(CommandsToServer.Registration);
             protocol.SendTypeOfUser(type);
-            protocol.SendLogin(login);
-            protocol.SendPassword(password);
-            if (type == TypeOfUser.Expert)
-            {
-                protocol.SendString(expertWeight.ToString());
-            }
+            protocol.SendObject<T>(user);
             return protocol.ReceiveAnswerFromServer();
         }
 
@@ -102,31 +97,27 @@ namespace TCPConnectionAPIClientModule_C_sharp_
             }
         }
 
-        public AnswerFromServer RegisterNewAdmin(string login, string password)
+        public AnswerFromServer RegisterNewAdmin(Admin admin)
         {
             protocol.SendCommand(CommandsToServer.RegisterNewUser);
             protocol.SendTypeOfUser(TypeOfUser.Admin);
-            protocol.SendLogin(login);
-            protocol.SendPassword(password);
+            protocol.SendObject(admin);
             return protocol.ReceiveAnswerFromServer();
         }
 
-        public AnswerFromServer RegisterNewClient(string login, string password)
+        public AnswerFromServer RegisterNewClient(Client client)
         {
             protocol.SendCommand(CommandsToServer.RegisterNewUser);
             protocol.SendTypeOfUser(TypeOfUser.Client);
-            protocol.SendLogin(login);
-            protocol.SendPassword(password);
+            protocol.SendObject(client);
             return protocol.ReceiveAnswerFromServer();
         }
 
-        public AnswerFromServer RegisterNewExpert(string login, string password, float rateWeight)
+        public AnswerFromServer RegisterNewExpert(Expert expert)
         {
             protocol.SendCommand(CommandsToServer.RegisterNewUser);
             protocol.SendTypeOfUser(TypeOfUser.Expert);
-            protocol.SendLogin(login);
-            protocol.SendPassword(password);
-            protocol.SendString(rateWeight.ToString());
+            protocol.SendObject(expert);
             return protocol.ReceiveAnswerFromServer();
         }
 
@@ -250,6 +241,28 @@ namespace TCPConnectionAPIClientModule_C_sharp_
         {
             protocol.SendCommand(CommandsToServer.GetAllVehicles);
             return protocol.ReceiveCollection<Vehicle>();
+        }
+
+        public AnswerFromServer ModifyClient(Client client)
+        {
+            protocol.SendCommand(CommandsToServer.ModifyClient);
+            protocol.SendObject(client);
+            return protocol.ReceiveAnswerFromServer();
+        }
+
+        public AnswerFromServer ModifyExpert(Expert expert)
+        {
+            protocol.SendCommand(CommandsToServer.ModifyExpert);
+            protocol.SendObject(expert);
+            return protocol.ReceiveAnswerFromServer();
+        }
+
+        public AnswerFromServer RateVehicle(int vehicleId, float expertRate)
+        {
+            protocol.SendCommand(CommandsToServer.RateVehicle);
+            protocol.SendString(vehicleId.ToString());
+            protocol.SendString(expertRate.ToString());
+            return protocol.ReceiveAnswerFromServer();
         }
     }
 }

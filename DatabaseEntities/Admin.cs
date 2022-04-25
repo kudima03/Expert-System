@@ -76,6 +76,11 @@ namespace DatabaseEntities
             Password = password;
         }
 
+        public Admin(string login, string password, Bitmap photo) : this(login, password)
+        {
+            Photo = photo;
+        }
+
         public bool Equals(Admin other)
         {
             return Login == other.Login && Password == other.Password;

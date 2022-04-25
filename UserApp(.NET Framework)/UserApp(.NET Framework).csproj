@@ -38,8 +38,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>D_5JS04LcBI.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -127,23 +126,14 @@
     <Compile Include="FindUser.xaml.cs">
       <DependentUpon>FindUser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FindVehicleByColor.xaml.cs">
-      <DependentUpon>FindVehicleByColor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FindVehicleByDealer.xaml.cs">
-      <DependentUpon>FindVehicleByDealer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FindVehicleByModel.xaml.cs">
-      <DependentUpon>FindVehicleByModel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FindVehicleByRegistrationNumber.xaml.cs">
-      <DependentUpon>FindVehicleByRegistrationNumber.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FindVehicleByTotalRating.xaml.cs">
-      <DependentUpon>FindVehicleByTotalRating.xaml</DependentUpon>
+    <Compile Include="FindVehicle.xaml.cs">
+      <DependentUpon>FindVehicle.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainContentWindow.xaml.cs">
       <DependentUpon>MainContentWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RateVehicle.xaml.cs">
+      <DependentUpon>RateVehicle.xaml</DependentUpon>
     </Compile>
     <Compile Include="Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
@@ -236,23 +226,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FindVehicleByColor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FindVehicleByDealer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FindVehicleByModel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FindVehicleByRegistrationNumber.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FindVehicleByTotalRating.xaml">
+    <Page Include="FindVehicle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -272,6 +246,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="RateVehicle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Registration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -324,6 +302,12 @@
     <Resource Include="Resources\background.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\defaultPhoto.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="D_5JS04LcBI.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ClassLibraryForTCPConnectionAPI%28C-sharp%29\ClassLibraryForTCPConnectionAPI%28C-sharp%29.csproj">
       <Project>{f6c439da-c84e-48ea-87ca-25a35daba960}</Project>
       <Name>ClassLibraryForTCPConnectionAPI%28C-sharp%29</Name>
@@ -332,13 +316,14 @@
       <Project>{229c7e2e-f375-4512-a30b-9fecf5f5939e}</Project>
       <Name>DatabaseEntities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TCPConnectionAPI%28C-sharp%29\TCPConnectionAPIServer%28C-sharp%29.csproj">
+      <Project>{8d5cc562-ef8c-4b9b-882f-ab121c5b02ae}</Project>
+      <Name>TCPConnectionAPIServer%28C-sharp%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TCPConnectionAPIClientModule%28C-sharp%29\TCPConnectionAPIClientModule%28C-sharp%29.csproj">
       <Project>{266def97-e3a7-4b60-b8fd-4c1c8e35833b}</Project>
       <Name>TCPConnectionAPIClientModule%28C-sharp%29</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\defaultPhoto.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

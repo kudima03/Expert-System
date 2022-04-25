@@ -28,13 +28,13 @@
                 <TextBlock Text="Проведённый вами теоретический анализ" TextWrapping="Wrap" Width="140" Foreground="White"></TextBlock>
                 <StackPanel Orientation="Horizontal" Width="234">
                     <StackPanel Width="78">
-                        <RadioButton VerticalAlignment="Center" HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton IsChecked="False" Click="FirstButton_Click" Name="FirstButton" VerticalAlignment="Center" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                     <StackPanel Width="78">
-                        <RadioButton HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="SecondButton_Click"  Name="SecondButton" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                     <StackPanel Width="78">
-                        <RadioButton HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="ThirdButton_Click" Name="ThirdButton" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -43,13 +43,13 @@
                 <TextBlock Text="Ваш производственный опыт" TextWrapping="Wrap" Width="140" Foreground="White"></TextBlock>
                 <StackPanel Orientation="Horizontal" Width="234">
                     <StackPanel Width="78">
-                        <RadioButton VerticalAlignment="Center" HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="FourButton_Click" Name="FourButton" VerticalAlignment="Center" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                     <StackPanel Width="78">
-                        <RadioButton HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="FiveButton_Click" Name="FiveButton" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                     <StackPanel Width="78">
-                        <RadioButton HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="SixButton_Click" Name="SixButton" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -58,13 +58,13 @@
                 <TextBlock Text="Обобщение работ зарубежных факторов" TextWrapping="Wrap" Width="140" Foreground="White"></TextBlock>
                 <StackPanel Orientation="Horizontal" Width="234">
                     <StackPanel Width="78">
-                        <RadioButton VerticalAlignment="Center" HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="SevenButton_Click" Name="SevenButton" VerticalAlignment="Center" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                     <StackPanel Width="78">
-                        <RadioButton HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="EightButton_Click" Name="EightButton" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                     <StackPanel Width="78">
-                        <RadioButton HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="TenButton_Click" Name="TenButton" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -73,13 +73,13 @@
                 <TextBlock Text="Ваше личное знакомство с состоянием дел за рубежом" TextWrapping="Wrap" Width="140" Foreground="White"></TextBlock>
                 <StackPanel Orientation="Horizontal" Width="234">
                     <StackPanel Width="78">
-                        <RadioButton VerticalAlignment="Center" HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="ElevenButton_Click" Name="ElevenButton" VerticalAlignment="Center" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                     <StackPanel Width="78">
-                        <RadioButton HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="TwelveButton_Click" Name="TwelveButton" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                     <StackPanel Width="78">
-                        <RadioButton HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="ThirteenButton_Click" Name="ThirteenButton" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -88,13 +88,13 @@
                 <TextBlock Text="Ваша интуиция" TextWrapping="Wrap" Width="140" Foreground="White"></TextBlock>
                 <StackPanel Orientation="Horizontal" Width="234">
                     <StackPanel Width="78">
-                        <RadioButton VerticalAlignment="Center" HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="FourteenButton_Click" Name="FourteenButton" VerticalAlignment="Center" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                     <StackPanel Width="78">
-                        <RadioButton HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="FiftheenButton_Click" Name="FiftheenButton" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                     <StackPanel Width="78">
-                        <RadioButton HorizontalAlignment="Center"></RadioButton>
+                        <RadioButton Click="SixteenButton_Click" Name="SixteenButton" HorizontalAlignment="Center"></RadioButton>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

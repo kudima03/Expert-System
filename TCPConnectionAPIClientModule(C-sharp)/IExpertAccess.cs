@@ -1,6 +1,10 @@
-﻿namespace TCPConnectionAPIClientModule_C_sharp_
+﻿using ClassLibraryForTCPConnectionAPI_C_sharp_;
+using DatabaseEntities;
+
+namespace TCPConnectionAPIClientModule_C_sharp_
 {
-    public interface IExpertAccess : IDataModifyAccess, ICommonAccess
+    public interface IExpertAccess : IDataViewAccess, ICommonAccess
     {
+        AnswerFromServer RateVehicle(int vehicleId, float expertRate);
     }
 }

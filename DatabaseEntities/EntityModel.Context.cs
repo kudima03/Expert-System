@@ -18,7 +18,7 @@ namespace DatabaseEntities
         public EntityModelContainer1()
             : base("name=EntityModelContainer1")
         {
-           this.Configuration.ProxyCreationEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

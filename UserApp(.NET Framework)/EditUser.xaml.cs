@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,12 +21,21 @@ namespace UserApp_.NET_Framework_
     /// </summary>
     public partial class EditUser : Window
     {
+        string fileName;
+        int counter = 0;
+        ParamToFindUser choosenParam;
         bool isEmpty = true;
         private IAdminAccess module;
+        List<DatabaseEntities.Client> clients;
+        DatabaseEntities.Client clientBuffer;
         public EditUser(IAdminAccess module)
         {
+            fileName = "defaultPhoto.png";
+            choosenParam = ParamToFindUser.Login;
             this.module = module;
+            clients = module.GetAllClients();
             InitializeComponent();
+            Show(clients[0]);
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)
@@ -32,21 +43,156 @@ namespace UserApp_.NET_Framework_
             this.Close();
         }
 
-        private void FindUser_Click(object sender, RoutedEventArgs e)
+        private void Show(DatabaseEntities.Client client)
         {
+            if (client == null)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else
+            {
+                UserImage.Source = App.ConvertToBitmapImage(client.Photo);
+                UserLogin.Text = client.Login;
+                UserStatus.Text = client.UserStatus.ToString();
+                if (client.IsOnline)
+                {
+                    UserLastOnline.Text = "В сети";
+                }
+                else
+                {
+                    UserLastOnline.Text = client.LastOnline.ToString();
+                }
 
+            }
         }
-
         private void SaveUser_Click(object sender, RoutedEventArgs e)
         {
-
+            foreach (var item in clients)
+            {
+                module.ModifyClient(item);
+            }
         }
 
-        private void LoginInput_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void UserImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                fileName = op.FileName;
+                UserImage.Source = new BitmapImage(new Uri(fileName));
+            }
+        }
+        private void NewClient(DatabaseEntities.Client client)
+        {
+            if (client == null)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else
+            {
+                client.Photo = new Bitmap(fileName);
+                client.Login = UserLogin.Text;
+            }
+        }
+        private void Submit_Click(object sender, RoutedEventArgs e)
+        {
+            NewClient(clients[counter]);
+        }
+
+        private void FindUser_Click(object sender, RoutedEventArgs e)
+        {
+            clients.Clear();
+            switch (choosenParam)
+            {
+                case ParamToFindUser.Login:
+                    {
+                        clientBuffer = module.FindClientByLogin(DataInput.Text);
+                        clients.Add(clientBuffer);
+                        break;
+                    }
+                case ParamToFindUser.None:
+                    {
+                        clients = module.GetAllClients();
+                        break;
+                    }
+                default:
+                    {
+                        MessageBox.Show("Повторите попытку!");
+                        break;
+                    }
+            }
+
+            if (clients.Count == 0)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else
+            {
+                Show(clients[0]);
+            }
+        }
+
+        private void FindByLogin_Click(object sender, RoutedEventArgs e)
+        {
+            choosenParam = ParamToFindUser.Login;
+            TopMenuItem.Header = "Поиск по логину";
+        }
+
+        private void ShowAll_Click(object sender, RoutedEventArgs e)
+        {
+            choosenParam = ParamToFindUser.None;
+            TopMenuItem.Header = "Показать всё";
+        }
+
+        private void LeftArrow_Click(object sender, RoutedEventArgs e)
+        {
+            if (clients.Count == 0)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else
+            {
+                if (counter == 0)
+                {
+                    Show(clients[0]);
+                }
+                else
+                {
+                    counter--;
+                    Show(clients[counter]);
+                }
+            }
+        }
+
+        private void RightArrow_Click(object sender, RoutedEventArgs e)
+        {
+            if (clients.Count == 0)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else
+            {
+                if (counter + 1 == clients.Count)
+                {
+                    Show(clients[counter]);
+                }
+                else
+                {
+                    counter++;
+                    Show(clients[counter]);
+                }
+            }
+        }
+
+        private void DataInput_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (isEmpty)
             {
-                LoginInput.Text = "";
+                DataInput.Text = "";
                 isEmpty = false;
             }
         }

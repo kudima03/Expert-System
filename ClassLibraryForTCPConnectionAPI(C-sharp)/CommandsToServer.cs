@@ -13,6 +13,8 @@
         UnbanExpert,
         DeleteClient,
         DeleteExpert,
+        ModifyClient,
+        ModifyExpert,
         FindClientByLogin,
         GetAllClients,
         FindExpertByLogin,
@@ -30,6 +32,7 @@
         FindVehiclesByModel,
         FindVehiclesByRegistrationNumber,
         FindVehiclesByRate,
-        GetAllVehicles
+        GetAllVehicles,
+        
     }
 }

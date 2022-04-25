@@ -19,31 +19,178 @@ namespace UserApp_.NET_Framework_
     /// </summary>
     public partial class DeleteVehicle : Window
     {
+        int counter = 0;
+        ParamToFind choosenParam;
         bool isEmpty = true;
         private IAdminAccess module;
+        List<DatabaseEntities.Vehicle> vehicles;
         public DeleteVehicle(IAdminAccess module)
         {
+            choosenParam = ParamToFind.Color;
             this.module = module;
+            vehicles = module.GetAllVehicles();
             InitializeComponent();
-        }
-
-        private void GoBack_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
+            Show(vehicles[0]);
         }
 
         private void DeleteVehicle_Click(object sender, RoutedEventArgs e)
         {
+            module.DeleteVehicle(vehicles[counter].Id);
+        }
+        private void Show(DatabaseEntities.Vehicle vehicle)
+        {
+            if (vehicle == null)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else
+            {
+                VehicleImage.Source = App.ConvertToBitmapImage(vehicle.Photo);
+                VehicleModel.Text = vehicle.Model;
+                VehicleTotalRate.Text = vehicle.TotalRate.ToString();
+                VehicleRegNum.Text = vehicle.RegistrationNumber.ToString();
+                VehicleDealer.Text = vehicle.Dealer;
+                VehicleColor.Text = vehicle.Colour;
+            }
+        }
+        private void FindVehicle_Click(object sender, RoutedEventArgs e)
+        {
+            vehicles.Clear();
+            switch (choosenParam)
+            {
+                case ParamToFind.Color:
+                    {
+                        vehicles = module.FindVehicleWithColour(VehicleInput.Text);
+                        break;
+                    }
+                case ParamToFind.Dealer:
+                    {
+                        vehicles = module.FindVehicleWithDealer(VehicleInput.Text);
+                        break;
+                    }
+                case ParamToFind.RegistationNumber:
+                    {
+                        vehicles = module.FindVehicleWithRegistrationNumber(VehicleInput.Text);
+                        break;
+                    }
+                case ParamToFind.Model:
+                    {
+                        vehicles = module.FindVehicleWithModel(VehicleInput.Text);
+                        break;
+                    }
+                case ParamToFind.TotalRate:
+                    {
+                        vehicles = module.FindVehicleWithTotalRate(double.Parse(VehicleInput.Text));
+                        break;
+                    }
+                case ParamToFind.None:
+                    {
+                        vehicles = module.GetAllVehicles();
+                        break;
+                    }
+                default:
+                    {
+                        MessageBox.Show("Повторите попытку!");
+                        break;
+                    }
+            }
 
+            if (vehicles.Count == 0)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else
+            {
+                Show(vehicles[0]);
+            }
+        }
+        private void GoBack_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        private void LeftArrow_Click(object sender, RoutedEventArgs e)
+        {
+            if (vehicles.Count == 0)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else
+            {
+                if (counter == 0)
+                {
+                    Show(vehicles[0]);
+                }
+                else
+                {
+                    counter--;
+                    Show(vehicles[counter]);
+                }
+            }
         }
 
-        private void RegNumInput_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void RightArrow_Click(object sender, RoutedEventArgs e)
+        {
+            if (vehicles.Count == 0)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else
+            {
+                if (counter + 1 == vehicles.Count)
+                {
+                    Show(vehicles[counter]);
+                }
+                else
+                {
+                    counter++;
+                    Show(vehicles[counter]);
+                }
+            }
+        }
+
+        private void FindByDealer_Click(object sender, RoutedEventArgs e)
+        {
+            choosenParam = ParamToFind.Dealer;
+            TopMenuItem.Header = "Поиск по дилеру";
+        }
+
+        private void FindByColor_Click(object sender, RoutedEventArgs e)
+        {
+            choosenParam = ParamToFind.Color;
+            TopMenuItem.Header = "Поиск по цвету";
+        }
+
+        private void FindByModel_Click(object sender, RoutedEventArgs e)
+        {
+            choosenParam = ParamToFind.Model;
+            TopMenuItem.Header = "Поиск по модели";
+        }
+
+        private void FindByRegNumber_Click(object sender, RoutedEventArgs e)
+        {
+            choosenParam = ParamToFind.RegistationNumber;
+            TopMenuItem.Header = "Поиск по номеру";
+        }
+
+        private void FindByTotalRating_Click(object sender, RoutedEventArgs e)
+        {
+            choosenParam = ParamToFind.TotalRate;
+            TopMenuItem.Header = "Поиск по рейтингу";
+        }
+
+        private void VehicleInput_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (isEmpty)
             {
-                RegNumInput.Text = "";
+                VehicleInput.Text = "";
                 isEmpty = false;
             }
+        }
+
+        private void ShowAll_Click(object sender, RoutedEventArgs e)
+        {
+            choosenParam = ParamToFind.None;
+            TopMenuItem.Header = "Показать всё";
         }
     }
 }

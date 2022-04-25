@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,10 +20,12 @@ namespace UserApp_.NET_Framework_
     /// </summary>
     public partial class Registration : Window
     {
+        string fileName;
         bool isEmpty = true, isEmptyTwo = true, isEmptyThree = true;
         private ClientConnectionModule module;
         public Registration(ClientConnectionModule module)
         {
+            fileName = "defaultImage.jpg";
             this.module = module;
             InitializeComponent();
         }
@@ -34,7 +37,7 @@ namespace UserApp_.NET_Framework_
             }
             else
             {
-                var answer = module.Registration(ClassLibraryForTCPConnectionAPI_C_sharp_.TypeOfUser.Client, loginInputBox.Text, passwordInputBox.Text);
+                var answer = module.Registration(ClassLibraryForTCPConnectionAPI_C_sharp_.TypeOfUser.Client, new DatabaseEntities.Client(loginInputBox.Text, passwordInputBox.Text, new System.Drawing.Bitmap(fileName)));
                 switch (answer)
                 {
                     case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Successfully:
@@ -45,23 +48,24 @@ namespace UserApp_.NET_Framework_
                             break;
                         }
                     case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Error:
-                        break;
+                        {
+                            MessageBox.Show("Ошибка!");
+                            break;
+                        }
                     case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.UnknownCommand:
-                        break;
+                        {
+                            MessageBox.Show("Ошибка!");
+                            break;
+                        }
                     default:
                         break;
                 }
             }
         }
 
-        private void BtnSignIn_MouseEnter(object sender, MouseEventArgs e)
-        {
-
-        }
-
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
+            MainWindow mainWindow = new MainWindow(module);
             mainWindow.Show();
             this.Close();
         }
@@ -91,6 +95,19 @@ namespace UserApp_.NET_Framework_
             if (passwordInputBoxRepeat.Text == "")
             {
                 passwordInputBoxRepeat.Text = "Повторите пароль";
+            }
+        }
+
+        private void AddPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                fileName = op.FileName;
             }
         }
 

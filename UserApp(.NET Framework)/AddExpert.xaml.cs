@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,10 +21,12 @@ namespace UserApp_.NET_Framework_
     /// </summary>
     public partial class AddExpert : Window
     {
+        string fileName;
         bool isEmpty = true, isEmptyTwo = true, isEmptyThree = true, isEmptyFour = true;
         private IAdminAccess module;
         public AddExpert(IAdminAccess module)
         {
+            fileName = "defaultPhoto.png";
             this.module = module;
             InitializeComponent();
         }
@@ -34,7 +38,27 @@ namespace UserApp_.NET_Framework_
 
         private void AddExpert_Click(object sender, RoutedEventArgs e)
         {
-
+            var answer = module.RegisterNewExpert(new DatabaseEntities.Expert(loginInputBox.Text, passwordInputBox.Text, new Bitmap(fileName), double.Parse(totalRateInput.Text)));
+            switch (answer)
+            {
+                case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Successfully:
+                    {
+                        MessageBox.Show("Успешно!");
+                        break;
+                    }
+                case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Error:
+                    {
+                        MessageBox.Show("Ошибка!");
+                        break;
+                    }
+                case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.UnknownCommand:
+                    {
+                        MessageBox.Show("Ошибка!");
+                        break;
+                    }
+                default:
+                    break;
+            }
         }
 
         private void loginInputBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -59,6 +83,19 @@ namespace UserApp_.NET_Framework_
             if (totalRateInput.Text == "")
             {
                 passwordInputBoxRepeat.Text = "Введите вес оценки";
+            }
+        }
+
+        private void AddPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                fileName = op.FileName;
             }
         }
 

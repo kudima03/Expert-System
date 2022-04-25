@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UserApp_.NET_Framework_"
         mc:Ignorable="d"
-        Title="UserMainWindow" Height="350" Width="400">
+        Title="UserMainWindow" Height="250" Width="400">
     <Window.Background>
         <ImageBrush ImageSource="Resources/background.jpg"/>
     </Window.Background>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="170"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="120"></RowDefinition>
             <RowDefinition MaxHeight="50"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -23,25 +23,13 @@
         </Grid.ColumnDefinitions>
         <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" FontWeight="Bold" Foreground="White" FontSize="30">Главная</TextBlock>
         <Button Style="{DynamicResource ButtonStyleGoBack}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="0" Cursor="Hand" FontSize="40" Foreground="White" Content="«" x:Name="GoBack" Click="GoBack_Click" RenderTransformOrigin="0.5,0.5" MaxHeight="50" MaxWidth="30" Background="Transparent" BorderBrush="Transparent" Margin="0,-12,0,0"/>
-        <Menu Style="{DynamicResource MenuStyle}" MinWidth="160" HorizontalAlignment="Left" MaxWidth="250" MaxHeight="120" Grid.Row="1" Grid.Column="1" Name="MainMenu">
+        <Menu Style="{DynamicResource MenuStyle}" MinWidth="160" HorizontalAlignment="Left" MaxWidth="250" MaxHeight="30" Grid.Row="1" Grid.Column="1" Name="MainMenu">
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel Orientation="Vertical"/>
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
-            <MenuItem Cursor="Hand" Style="{DynamicResource MenuItemStyle}" Margin="0 5 0 0" Header="Найти по цвету" Name="FindVehicleWithColour" Click="FindVehicleWithColour_Click">
-                
-            </MenuItem>
-            <MenuItem Cursor="Hand" Style="{DynamicResource MenuItemStyle}" Header="Найти по дилеру" Name="FindVehicleWithDealer" Click="FindVehicleWithDealer_Click">
-
-            </MenuItem>
-            <MenuItem Cursor="Hand" Style="{DynamicResource MenuItemStyle}" Header="Найти по модели" Name="FindVehicleWithModel" Click="FindVehicleWithModel_Click">
-                
-            </MenuItem>
-            <MenuItem Cursor="Hand" Style="{DynamicResource MenuItemStyle}" Header="Найти по рег. номеру" Name="FindVehicleWithRegistrationNumber" Click="FindVehicleWithRegistrationNumber_Click">
-                
-            </MenuItem>
-            <MenuItem Cursor="Hand" Style="{DynamicResource MenuItemStyle}" Margin="0 0 0 5" Header="Найти по рейтингу" Name="FindVehicleWithTotalRate" Click="FindVehicleWithTotalRate_Click">
+            <MenuItem Cursor="Hand" Style="{DynamicResource MenuItemStyle}" Margin="0 5 0 0" Header="Найти" Name="FindVehicle" Click="FindVehicle_Click">
 
             </MenuItem>
         </Menu>

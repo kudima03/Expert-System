@@ -14,6 +14,8 @@ namespace TCPConnectionAPI_C_sharp_
         bool BanClientsWhere(Func<Client, bool> comparer);
         bool BanExpertsWhere(Func<Expert, bool> comparer);
         bool UnbanExpertsWhere(Func<Expert, bool> comparer);
+        bool ModifyExpert(Expert newVersion);
+        bool ModifyClient(Client newVersion);
         bool UnbanClientsWhere(Func<Client, bool> comparer);
         bool DeleteClientsWhere(Func<Client, bool> comparer);
         bool DeleteExpertsWhere(Func<Expert, bool> comparer);

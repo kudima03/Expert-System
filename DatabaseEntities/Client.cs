@@ -76,6 +76,11 @@ namespace DatabaseEntities
             Password = pasword;
         }
 
+        public Client(string login, string password, Bitmap photo) : this(login, password)
+        {
+            Photo = photo;
+        }
+
         public bool Equals(Client other)
         {
             return Login == other.Login && Password == other.Password

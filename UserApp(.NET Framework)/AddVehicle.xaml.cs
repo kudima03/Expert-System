@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,17 +20,39 @@ namespace UserApp_.NET_Framework_
     /// </summary>
     public partial class AddVehicle : Window
     {
-        bool isEmpty = true, isEmptyTwo = true, isEmptyThree = true, isEmptyFour = true, isEmptyFive = true;
+        string fileName;
+        bool isEmpty = true, isEmptyTwo = true, isEmptyThree = true, isEmptyFour = true;
         private IAdminAccess module;
         public AddVehicle(IAdminAccess module)
         {
+            fileName = "defaultPhoto.png";
             this.module = module;
             InitializeComponent();
         }
 
         private void AddVehicle_Click(object sender, RoutedEventArgs e)
         {
-
+            var answer = module.CreateVehicle(new DatabaseEntities.Vehicle(Dealer.Text, Model.Text, Colour.Text, RegistrationNumber.Text) { Photo = new System.Drawing.Bitmap(fileName) });
+            switch (answer)
+            {
+                case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Successfully:
+                    {
+                        MessageBox.Show("Успешно!");
+                        break;
+                    }
+                case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Error:
+                    {
+                        MessageBox.Show("Ошибка!");
+                        break;
+                    }
+                case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.UnknownCommand:
+                    {
+                        MessageBox.Show("Ошибка!");
+                        break;
+                    }
+                default:
+                    break;
+            }
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)
@@ -60,9 +83,22 @@ namespace UserApp_.NET_Framework_
             {
                 RegistrationNumber.Text = "Введите рег. номер";
             }
-            if (TotalRate.Text == "")
+           /* if (TotalRate.Text == "")
             {
                 TotalRate.Text = "Введите рейтинг";
+            }*/
+        }
+
+        private void AddPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                fileName = op.FileName;
             }
         }
 
@@ -89,10 +125,10 @@ namespace UserApp_.NET_Framework_
             {
                 RegistrationNumber.Text = "Введите рег. номер";
             }
-            if (TotalRate.Text == "")
+            /*if (TotalRate.Text == "")
             {
                 TotalRate.Text = "Введите рейтинг";
-            }
+            }*/
         }
 
         private void Colour_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -118,10 +154,10 @@ namespace UserApp_.NET_Framework_
             {
                 RegistrationNumber.Text = "Введите рег. номер";
             }
-            if (TotalRate.Text == "")
+            /*if (TotalRate.Text == "")
             {
                 TotalRate.Text = "Введите рейтинг";
-            }
+            }*/
         }
 
         private void RegistrationNumber_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -147,13 +183,13 @@ namespace UserApp_.NET_Framework_
             {
                 Dealer.Text = "Введите дилера";
             }
-            if (TotalRate.Text == "")
+          /*  if (TotalRate.Text == "")
             {
                 TotalRate.Text = "Введите рейтинг";
-            }
+            }*/
         }
 
-        private void TotalRate_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+      /*  private void TotalRate_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (isEmptyFive)
             {
@@ -180,6 +216,6 @@ namespace UserApp_.NET_Framework_
             {
                 RegistrationNumber.Text = "Введите рег. номер";
             }
-        }
+        }*/
     }
 }
