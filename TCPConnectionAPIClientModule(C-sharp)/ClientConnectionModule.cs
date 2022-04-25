@@ -242,5 +242,27 @@ namespace TCPConnectionAPIClientModule_C_sharp_
             protocol.SendCommand(CommandsToServer.GetAllVehicles);
             return protocol.ReceiveCollection<Vehicle>();
         }
+
+        public AnswerFromServer ModifyClient(Client client)
+        {
+            protocol.SendCommand(CommandsToServer.ModifyClient);
+            protocol.SendObject(client);
+            return protocol.ReceiveAnswerFromServer();
+        }
+
+        public AnswerFromServer ModifyExpert(Expert expert)
+        {
+            protocol.SendCommand(CommandsToServer.ModifyExpert);
+            protocol.SendObject(expert);
+            return protocol.ReceiveAnswerFromServer();
+        }
+
+        public AnswerFromServer RateVehicle(int vehicleId, float expertRate)
+        {
+            protocol.SendCommand(CommandsToServer.RateVehicle);
+            protocol.SendString(vehicleId.ToString());
+            protocol.SendString(expertRate.ToString());
+            return protocol.ReceiveAnswerFromServer();
+        }
     }
 }

@@ -27,8 +27,10 @@
             <TextBox PreviewMouseDown="Model_PreviewMouseDown" Style="{DynamicResource TextBoxStyleInput}" Name="Model" Padding="3 5" Margin="0 0 0 5" Text="Введите модель" Background="White" Width="150" MinWidth="150"></TextBox>
             <TextBox PreviewMouseDown="Colour_PreviewMouseDown" Style="{DynamicResource TextBoxStyleInput}" Name="Colour" Padding="3 5" Margin="0 0 0 5" Text="Введите цвет" Background="White" Width="150" MinWidth="150"></TextBox>
             <TextBox PreviewMouseDown="RegistrationNumber_PreviewMouseDown" Style="{DynamicResource TextBoxStyleInput}" Name="RegistrationNumber" Padding="3 5" Margin="0 0 0 5" Text="Введите рег. номер" Background="White" Width="150" MinWidth="150"></TextBox>
-            <TextBox PreviewMouseDown="TotalRate_PreviewMouseDown" Style="{DynamicResource TextBoxStyleInput}" Name="TotalRate" Padding="3 5" Margin="0 0 0 20" Text="Введите рейтинг" Background="White" Width="150" MinWidth="150"></TextBox>
-
+            <!--<TextBox PreviewMouseDown="TotalRate_PreviewMouseDown" Style="{DynamicResource TextBoxStyleInput}" Name="TotalRate" Padding="3 5" Margin="0 0 0 20" Text="Введите рейтинг" Background="White" Width="150" MinWidth="150"></TextBox>
+            -->
+            <Button Margin="0 5 0 5" Cursor="Hand" Style="{DynamicResource ButtonStyleSubmit}" Name="AddPhoto" Foreground="White" HorizontalAlignment="Center"  Padding="3 4" MaxWidth="140" Content="Выбрать фото" MinWidth="100" Click="AddPhoto_Click">
+            </Button>
             <Button Style="{DynamicResource ButtonStyleSubmit}" Click="AddVehicle_Click" BorderBrush="Transparent"  BorderThickness="0" Background="White" Padding="3 4" MaxWidth="100" Content="Добавить">
 
             </Button>

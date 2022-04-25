@@ -188,7 +188,7 @@
                         <DropShadowEffect Color="AliceBlue" BlurRadius="25" Direction="270" ShadowDepth="0"/>
                     </TextBox.Effect>
                 </TextBox>
-                <TextBox PreviewMouseDown="passwordInputBox_PreviewMouseDown" Text="Пароль" x:Name="passwordInputBox" Margin="8" HorizontalAlignment="Center" Cursor="Hand" Focusable="True" MinWidth="150" Padding="2.2" Style="{DynamicResource TextBoxStyle}" TextChanged="PasswordInputBox_TextChanged">
+                <TextBox PreviewMouseDown="passwordInputBox_PreviewMouseDown" Text="Пароль" x:Name="passwordInputBox" Margin="8" HorizontalAlignment="Center" Cursor="Hand" Focusable="True" MinWidth="150" Padding="2.2" Style="{DynamicResource TextBoxStyle}">
                     <TextBox.Background>
                         <SolidColorBrush Color="Azure" Opacity="0.7" />
                     </TextBox.Background>

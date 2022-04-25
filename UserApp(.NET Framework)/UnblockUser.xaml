@@ -18,13 +18,13 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="40"></ColumnDefinition>
-            <ColumnDefinition Width="340"></ColumnDefinition>
-            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="290"></ColumnDefinition>
+            <ColumnDefinition Width="150"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="2" FontWeight="Bold" Foreground="White" FontSize="30" VerticalAlignment="Center">Разблокировка</TextBlock>
-        <TextBox PreviewMouseDown="LoginInput_PreviewMouseDown"  Style="{DynamicResource TextBoxStyleInput}" Name="LoginInput" MaxHeight="30" Grid.Row="1" Grid.Column="2" Padding="3 5" Text="Введите логин" Background="White" Width="auto" MinWidth="300"></TextBox>
-        <Button Style="{DynamicResource ButtonStyleSubmit}" Grid.Row="1" MaxHeight="30" Grid.Column="3" MaxWidth="20" Click="FindUser_Click" Cursor="Hand" Background="White" Content="Найти" MinWidth="60" BorderBrush="White"/>
+        <TextBox PreviewMouseDown="LoginInput_PreviewMouseDown"  Style="{DynamicResource TextBoxStyleInput}" Name="LoginInput" MaxHeight="30" Grid.Row="1" Grid.Column="2" Padding="3 5" Text="Введите логин" Background="White" Width="auto"></TextBox>
+        <Button Style="{DynamicResource ButtonStyleSubmit}" Grid.Row="1" MaxHeight="30" Grid.Column="3" MaxWidth="20" Click="FindUser_Click" Cursor="Hand" Background="White" Content="Разблокировать" MinWidth="120" BorderBrush="White"/>
         <Button Style= "{DynamicResource ButtonStyleGoBack}" Grid.Row="1" Grid.Column="1" Cursor="Hand" FontSize="40" Foreground="White" Content="«" Name="GoBack" Click="GoBack_Click" RenderTransformOrigin="0.5,0.5"  MaxHeight="50" MaxWidth="30" Margin="0,36,0,0" Grid.RowSpan="2">
             <Button.Background>
                 <SolidColorBrush Color="Transparent"></SolidColorBrush>

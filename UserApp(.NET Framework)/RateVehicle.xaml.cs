@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,32 +17,22 @@ using TCPConnectionAPIClientModule_C_sharp_;
 namespace UserApp_.NET_Framework_
 {
     /// <summary>
-    /// Логика взаимодействия для EditVehicle.xaml
+    /// Логика взаимодействия для RateVehicle.xaml
     /// </summary>
-public partial class EditVehicle : Window
+    public partial class RateVehicle : Window
     {
-        string fileName;
         int counter = 0;
         ParamToFind choosenParam;
         bool isEmpty = true;
-        private IAdminAccess module;
+        private IExpertAccess module;
         List<DatabaseEntities.Vehicle> vehicles;
-        public EditVehicle(IAdminAccess module)
+        public RateVehicle(IExpertAccess module)
         {
-            fileName = "defaultPhoto.png";
             choosenParam = ParamToFind.Color;
             this.module = module;
             vehicles = module.GetAllVehicles();
             InitializeComponent();
             Show(vehicles[0]);
-        }
-
-        private void SaveVehicle_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (var item in vehicles)
-            {
-                module.ModifyVehicle(item);
-            }
         }
 
         private void Show(DatabaseEntities.Vehicle vehicle)
@@ -70,12 +59,24 @@ public partial class EditVehicle : Window
             }
             else
             {
-                vehicle.Photo = new Bitmap(fileName);
-                vehicle.Model = VehicleModel.Text;
-                vehicle.TotalRate = float.Parse(VehicleTotalRate.Text);
-                vehicle.RegistrationNumber = VehicleRegNum.Text;
-                vehicle.Dealer = VehicleDealer.Text;
-                vehicle.Colour = VehicleColor.Text;
+                var answer = module.RateVehicle(vehicles[counter].Id, float.Parse(VehicleTotalRate.Text));
+                switch (answer)
+                {
+                    case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Successfully:
+                        {
+                            MessageBox.Show("Успешно");
+                            break;
+                        }
+                    case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Error:
+                        {
+                            MessageBox.Show("Ошибка");
+                            break;
+                        }
+                    case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.UnknownCommand:
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         private void FindVehicle_Click(object sender, RoutedEventArgs e)
@@ -218,23 +219,14 @@ public partial class EditVehicle : Window
             TopMenuItem.Header = "Показать всё";
         }
 
-        private void VehicleImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            OpenFileDialog op = new OpenFileDialog();
-            op.Title = "Select a picture";
-            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
-              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
-              "Portable Network Graphic (*.png)|*.png";
-            if (op.ShowDialog() == true)
-            {
-                fileName = op.FileName;
-                VehicleImage.Source = new BitmapImage(new Uri(fileName));
-            }
-        }
-
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             NewVehicle(vehicles[counter]);
+        }
+
+        private void SaveVehicle_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

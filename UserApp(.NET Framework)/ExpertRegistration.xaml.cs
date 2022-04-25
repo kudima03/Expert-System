@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,10 +21,12 @@ namespace UserApp_.NET_Framework_
     /// </summary>
     public partial class ExpertRegistration : Window
     {
+        string fileName;
         bool isEmpty = true, isEmptyTwo = true, isEmptyThree = true;
         private ClientConnectionModule module;
         public ExpertRegistration(ClientConnectionModule module)
         {
+            fileName = "defaultPhoto.png";
             this.module = module;
             InitializeComponent();
         }
@@ -31,13 +35,13 @@ namespace UserApp_.NET_Framework_
         {
             if (passwordInputBox.Text != passwordInputBoxRepeat.Text)
             {
-                MessageBox.Show("Error!");
+                MessageBox.Show("Ошибка!");
             }
             else
             {
                 ExpertTest expertTest = new ExpertTest();
                 expertTest.ShowDialog();
-                var answer = module.Registration(ClassLibraryForTCPConnectionAPI_C_sharp_.TypeOfUser.Expert, loginInputBox.Text, passwordInputBox.Text, expertTest.TotalRate);
+                var answer = module.Registration(ClassLibraryForTCPConnectionAPI_C_sharp_.TypeOfUser.Expert, new DatabaseEntities.Expert(loginInputBox.Text, passwordInputBox.Text, new Bitmap(fileName) , expertTest.TotalRate));
                 switch (answer)
                 {
                     case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Successfully:
@@ -82,6 +86,19 @@ namespace UserApp_.NET_Framework_
             if (passwordInputBoxRepeat.Text == "")
             {
                 passwordInputBoxRepeat.Text = "Повторите пароль";
+            }
+        }
+
+        private void AddPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                fileName = op.FileName;
             }
         }
 

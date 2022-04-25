@@ -14,5 +14,7 @@ namespace TCPConnectionAPIClientModule_C_sharp_
         AnswerFromServer UnbanClientWith(string login);
         AnswerFromServer DeleteExpertWith(string login);
         AnswerFromServer DeleteClientWith(string login);
+        AnswerFromServer ModifyClient(Client client);
+        AnswerFromServer ModifyExpert(Expert expert);
     }
 }

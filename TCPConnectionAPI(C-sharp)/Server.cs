@@ -233,6 +233,22 @@ namespace TCPConnectionAPI_C_sharp_
                                     _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
                                 break;
                             }
+                        case CommandsToServer.ModifyClient:
+                            {
+                                if (adminProtocol.ModifyClient(_protocol.ReceiveObject<Client>(user.ConnectionSocket)))
+                                    _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else
+                                    _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.ModifyExpert:
+                            {
+                                if (adminProtocol.ModifyExpert(_protocol.ReceiveObject<Expert>(user.ConnectionSocket)))
+                                    _protocol.SendAnswerFromServer(AnswerFromServer.Successfully, user.ConnectionSocket);
+                                else
+                                    _protocol.SendAnswerFromServer(AnswerFromServer.Error, user.ConnectionSocket);
+                                break;
+                            }
                         case CommandsToServer.DeleteVehicle:
                             {
                                 int id = int.Parse(_protocol.ReceiveString(user.ConnectionSocket));
@@ -489,6 +505,7 @@ namespace TCPConnectionAPI_C_sharp_
             _protocol = new TCPServerProtocol();
             _connectedUsers = new List<ConnectedUserInfo>();
             serverAccessPermission = new DatabaseContext();
+            serverAccessPermission.CreateAdmin(new Admin("admin", "admin"));
         }
 
         public void openConnection()

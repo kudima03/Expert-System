@@ -29,39 +29,15 @@ namespace UserApp_.NET_Framework_
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
             module.PreviousRoom();
-            MainWindow mainWindow = new MainWindow();
+            MainWindow mainWindow = new MainWindow(module as ClientConnectionModule);
             mainWindow.Show();
             this.Close();
         }
 
-        private void FindVehicleWithColour_Click(object sender, RoutedEventArgs e)
+        private void FindVehicle_Click(object sender, RoutedEventArgs e)
         {
-            FindVehicleByColor findVehicleByColor = new FindVehicleByColor(module as ClientConnectionModule);
-            findVehicleByColor.ShowDialog();
-        }
-
-        private void FindVehicleWithDealer_Click(object sender, RoutedEventArgs e)
-        {
-            FindVehicleByDealer findVehicleByDealer = new FindVehicleByDealer(module as ClientConnectionModule);
-            findVehicleByDealer.ShowDialog();
-        }
-
-        private void FindVehicleWithModel_Click(object sender, RoutedEventArgs e)
-        {
-            FindVehicleByModel findVehicleByModel = new FindVehicleByModel(module as ClientConnectionModule);
-            findVehicleByModel.ShowDialog();
-        }
-
-        private void FindVehicleWithRegistrationNumber_Click(object sender, RoutedEventArgs e)
-        {
-            FindVehicleByRegistrationNumber findVehicleByRegistrationNumber = new FindVehicleByRegistrationNumber(module as ClientConnectionModule);
-            findVehicleByRegistrationNumber.ShowDialog();
-        }
-
-        private void FindVehicleWithTotalRate_Click(object sender, RoutedEventArgs e)
-        {
-            FindVehicleByTotalRating findVehicleByTotalRating = new FindVehicleByTotalRating(module as ClientConnectionModule);
-            findVehicleByTotalRating.ShowDialog();
+            FindVehicle findVehicle = new FindVehicle(module);
+            findVehicle.ShowDialog();
         }
     }
 }

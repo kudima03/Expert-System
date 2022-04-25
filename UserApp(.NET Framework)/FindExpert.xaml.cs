@@ -29,7 +29,18 @@ namespace UserApp_.NET_Framework_
 
         private void FindExpert_Click(object sender, RoutedEventArgs e)
         {
-
+            var expert = module.FindExpertByLogin(ExpertLogin.Text);
+            ExpertLogin.Text = expert.Login;
+            ExpertStatus.Text = expert.UserStatus.ToString();
+            ExpertImage.Source = App.ConvertToBitmapImage(expert.Photo);
+            if (expert.IsOnline == true)
+            {
+                ExpertLastOnline.Text = "Сейчас онлайн";
+            }
+            else
+            {
+                ExpertStatus.Text = expert.LastOnline.ToString();
+            }
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)

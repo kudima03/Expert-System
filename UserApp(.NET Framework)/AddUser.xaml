@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UserApp_.NET_Framework_"
         mc:Ignorable="d"
-        Title="AddUser" Height="300" Width="450">
+        Title="AddUser" Height="320" Width="450">
     <Window.Background>
         <ImageBrush ImageSource="Resources/background.jpg"/>
     </Window.Background>
@@ -13,7 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
-            <RowDefinition MinHeight="170"></RowDefinition>
+            <RowDefinition MinHeight="210"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -27,7 +27,9 @@
             <TextBox PreviewMouseDown="loginInputBox_PreviewMouseDown" Style="{DynamicResource TextBoxStyleInput}" Name="loginInputBox" Padding="3 5" Margin="0 0 0 10" Text="Введите логин" Background="White" Width="150" MinWidth="150"></TextBox>
             <TextBox PreviewMouseDown="passwordInputBox_PreviewMouseDown" Style="{DynamicResource TextBoxStyleInput}" Name="passwordInputBox" Padding="3 5" Margin="0 0 0 10" Text="Введите пароль" Background="White" Width="150" MinWidth="150"></TextBox>
             <TextBox PreviewMouseDown="passwordInputBoxRepeat_PreviewMouseDown" Style="{DynamicResource TextBoxStyleInput}" Name="passwordInputBoxRepeat" Padding="3 5" Margin="0 0 0 20" Text="Повторите пароль" Background="White" Width="150" MinWidth="150"></TextBox>
-            <Button Style="{DynamicResource ButtonStyleSubmit}" Click="AddUser_Click" BorderBrush="Transparent"  BorderThickness="0" Background="White" Padding="3 4" MaxWidth="100" Content="Добавить">
+            <Button Margin="0 5 0 5" Cursor="Hand" Style="{DynamicResource ButtonStyleSubmit}" Name="AddPhoto" Foreground="White" HorizontalAlignment="Center"  Padding="3 4" MaxWidth="140" Content="Выбрать фото" MinWidth="100" Click="AddPhoto_Click">
+            </Button>
+            <Button Style="{DynamicResource ButtonStyleSubmit}" Cursor="Hand" Click="AddUser_Click" BorderBrush="Transparent"  BorderThickness="0" Background="White" Padding="3 4" MaxWidth="100" Content="Добавить">
 
             </Button>
         </StackPanel>

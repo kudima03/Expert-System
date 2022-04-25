@@ -17,10 +17,10 @@ namespace UserApp_.NET_Framework_
     /// <summary>
     /// Логика взаимодействия для MainContentWindow.xaml
     /// </summary>
-    public partial class AdminMainWindow : Window
+    public partial class MainContentWindow : Window
     {
         private IAdminAccess module;
-        public AdminMainWindow(IAdminAccess module)
+        public MainContentWindow(IAdminAccess module)
         {
             this.module = module;
             InitializeComponent();
@@ -35,16 +35,10 @@ namespace UserApp_.NET_Framework_
         }
         private void BackToAuth_Click(object sender, RoutedEventArgs e)
         {
-            module.PreviousRoom();
-            MainWindow mainWindow = new MainWindow(module as ClientConnectionModule);
+            MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             this.Close();
         }
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void FindUser_Click(object sender, RoutedEventArgs e)
         {
             FindUser findUser = new FindUser(module);
@@ -55,11 +49,6 @@ namespace UserApp_.NET_Framework_
         {
             AddUser addUser = new AddUser(module);
             addUser.ShowDialog();
-        }
-
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void AddExpert_Click(object sender, RoutedEventArgs e)
@@ -121,13 +110,6 @@ namespace UserApp_.NET_Framework_
             DeleteVehicle deleteVehicle = new DeleteVehicle(module);
             deleteVehicle.ShowDialog();
         }
-
-        private void FindVehicleWithColour_Click(object sender, RoutedEventArgs e)
-        {
-            FindVehicleByColor findVehicleByColor = new FindVehicleByColor(module);
-            findVehicleByColor.ShowDialog();
-        }
-
         private void AddAdmin_Click(object sender, RoutedEventArgs e)
         {
             AddAdmin addAdmin = new AddAdmin(module);
@@ -158,28 +140,10 @@ namespace UserApp_.NET_Framework_
             deleteExpert.ShowDialog();
         }
 
-        private void FindVehicleWithDealer_Click(object sender, RoutedEventArgs e)
+        private void FindVehicle_Click(object sender, RoutedEventArgs e)
         {
-            FindVehicleByDealer findVehicleByDealer = new FindVehicleByDealer(module);
-            findVehicleByDealer.ShowDialog();
-        }
-
-        private void FindVehicleWithModel_Click(object sender, RoutedEventArgs e)
-        {
-            FindVehicleByModel findVehicleByModel = new FindVehicleByModel(module);
-            findVehicleByModel.ShowDialog();
-        }
-
-        private void FindVehicleWithRegistrationNumber_Click(object sender, RoutedEventArgs e)
-        {
-            FindVehicleByRegistrationNumber findVehicleByNumber = new FindVehicleByRegistrationNumber(module);
-            findVehicleByNumber.ShowDialog();
-        }
-
-        private void FindVehicleWithTotalRate_Click(object sender, RoutedEventArgs e)
-        {
-            FindVehicleByTotalRating findVehicleByTotalRating = new FindVehicleByTotalRating(module);
-            findVehicleByTotalRating.ShowDialog();
+            FindVehicle findVehicle = new FindVehicle(module);
+            findVehicle.ShowDialog();
         }
 
         private void FindExpert_Click(object sender, RoutedEventArgs e)
