@@ -104,7 +104,7 @@ namespace TCPConnectionAPI_C_sharp_
                         {
                             int id = Authorization(ref user);
                             _protocol.SendTypeOfUser(user.Type, user.ConnectionSocket);
-                            if(id > 0)
+                            if (id > 0)
                             {
                                 return id;
                             }
@@ -112,7 +112,7 @@ namespace TCPConnectionAPI_C_sharp_
                             {
                                 continue;
                             }
-                            
+
                         }
                     case CommandsToServer.PreviousRoom:
                         {
@@ -130,21 +130,34 @@ namespace TCPConnectionAPI_C_sharp_
         protected virtual void UserHandler(object client)
         {
             ConnectedUserInfo user = client as ConnectedUserInfo;
-            while (true)
+            try
             {
-                user.DB_Id = Validation(ref user);
-                if (user.DB_Id <= 0) { Console.WriteLine("Client disconnected"); user.ConnectionSocket.Close(); return; }
-                switch (user.Type)
+                while (true)
                 {
-                    case TypeOfUser.Admin:
-                        { AdminHandler(user); break; }
-                    case TypeOfUser.Client:
-                        { ClientHandler(user); break; }
-                    case TypeOfUser.Expert:
-                        { ExpertHandler(user); break; }
-                    default:
-                        break;
+                    user.DB_Id = Validation(ref user);
+                    if (user.DB_Id <= 0) { Console.WriteLine("Client disconnected"); user.ConnectionSocket.Close(); return; }
+                    switch (user.Type)
+                    {
+                        case TypeOfUser.Admin:
+                            { AdminHandler(user); break; }
+                        case TypeOfUser.Client:
+                            { ClientHandler(user); break; }
+                        case TypeOfUser.Expert:
+                            { ExpertHandler(user); break; }
+                        default:
+                            break;
+                    }
                 }
+            }
+            catch(System.Net.Sockets.SocketException)
+            {
+                Console.WriteLine("Пользователь отключился");
+                return;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Возникла ошибка при работе с клиентом");
+                return;
             }
         }
 
