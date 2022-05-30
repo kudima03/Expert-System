@@ -18,7 +18,7 @@ namespace DatabaseEntities
         public EntityModelContainer1()
             : base("name=EntityModelContainer1")
         {
-            this.Configuration.ProxyCreationEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -27,9 +27,9 @@ namespace DatabaseEntities
         }
     
         public virtual DbSet<Vehicle> VehicleSet { get; set; }
-        public virtual DbSet<Rate> RateSet { get; set; }
         public virtual DbSet<Admin> AdminSet { get; set; }
         public virtual DbSet<Client> ClientSet { get; set; }
         public virtual DbSet<Expert> ExpertSet { get; set; }
+        public virtual DbSet<Rate> RateSet { get; set; }
     }
 }

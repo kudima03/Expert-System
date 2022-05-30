@@ -19,7 +19,7 @@ namespace UserApp_.NET_Framework_
     /// </summary>
     public partial class ExpertTest : Window
     {
-        public float TotalRate { get; set; }
+        public double TotalRate { get; set; }
         public ExpertTest()
         {
             TotalRate = 0;
@@ -58,6 +58,14 @@ namespace UserApp_.NET_Framework_
                 TotalRate += (float)0.05;
             if (SixteenButton.IsChecked == true)
                 TotalRate += (float)0.05;
+            var selfRate = 0;
+            if(!int.TryParse(SelfRateBox.Text, out selfRate))
+            {
+                MessageBox.Show("Не забудьте оценить себя!");
+                return;
+            }
+            TotalRate += selfRate * 0.1;
+            TotalRate /= 2;
             this.Close();
         }
 

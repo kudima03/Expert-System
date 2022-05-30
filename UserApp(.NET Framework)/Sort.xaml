@@ -1,0 +1,116 @@
+﻿<Window x:Class="UserApp_.NET_Framework_.Sort"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UserApp_.NET_Framework_"
+        mc:Ignorable="d"
+        Title="Sort" Height="450" Width="700">
+    <Window.Background>
+        <ImageBrush ImageSource="Resources/background.jpg"/>
+    </Window.Background>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition MinHeight="190"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MaxWidth="20"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition MinWidth="400"></ColumnDefinition>
+            <ColumnDefinition Width="130"></ColumnDefinition>
+            <ColumnDefinition MaxWidth="80"></ColumnDefinition>
+            <ColumnDefinition MaxWidth="20"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" FontWeight="Thin" Foreground="White" FontSize="40">Сортировка</TextBlock>
+        <Button Style="{DynamicResource ButtonStyleSubmit}" MaxHeight="40" Grid.Row="3" Grid.Column="3" MaxWidth="20" Click="FindSome_Click" Name="FindPlane" Cursor="Hand" Content="Сортировать" MinWidth="100"/>
+        <Menu Style="{DynamicResource MenuStyle}" Margin="0 20 0 0" HorizontalAlignment="Left" MaxWidth="280" Height="18" Grid.Row="1" Grid.Column="2" Name="MainMenuFind"  Grid.RowSpan="2" Width="162">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <MenuItem Header="Категория сортировки..."  Style="{DynamicResource MenuItemStyle}" Name="TopMenuItem">
+                <MenuItem Cursor="Hand" Margin="0 4 0 0" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Сортировать по модели" Name="SortByModel" Click="SortByModel_Click">
+
+                </MenuItem>
+                <MenuItem Cursor="Hand" Margin="0 4 0 0" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Сортировать по цвету" Name="SortByColor" Click="SortByColor_Click">
+
+                </MenuItem>
+                <MenuItem Cursor="Hand" Margin="0 4 0 0" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Сортировать по дилеру" Name="SortByDealer" Click="SortByDealer_Click">
+
+                </MenuItem>
+                <MenuItem Cursor="Hand" Margin="0 4 0 0" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Сортировать по рег. номеру" Name="SortByRegNum" Click="SortByRegNum_Click">
+
+                </MenuItem>
+                <MenuItem Cursor="Hand" Margin="0 4 0 0" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Сортировать по рейтингу" Name="SortByRating" Click="SortByRating_Click">
+
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Grid.Column="2" Grid.Row="3" Name="ConstructionCollection" VerticalAlignment="Top" Orientation="Vertical" Width="380" HorizontalAlignment="Left">
+            <StackPanel Name="ConstructionBlock">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="135"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Name="VehicleImage" Margin="0 0 4 0" Grid.Column="0" Grid.Row="0" Source="Resources/defaultPhoto.png"/>
+                    <ListBox Grid.Row="0" Grid.Column="1">
+                        <ListBoxItem Margin="0 3">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Дилер: " Margin="0 0 10 0"></TextBlock>
+                                <TextBlock Text="____" Name="VehicleDealer"></TextBlock>
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem Margin="0 3">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Модель: " Margin="0 0 10 0"></TextBlock>
+                                <TextBlock Text="____" Name="VehicleModel"></TextBlock>
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem Margin="0 3">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Цвет: " Margin="0 0 10 0"></TextBlock>
+                                <TextBlock Text="____" Name="VehicleColor"></TextBlock>
+                            </StackPanel>
+                        </ListBoxItem>
+
+                        <ListBoxItem Margin="0 3">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Рейтинг: " Margin="0 0 10 0"></TextBlock>
+                                <TextBlock Text="____" Name="VehicleTotalRate"></TextBlock>
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem Margin="0 3">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Рег. номер: " Margin="0 0 10 0"></TextBlock>
+                                <TextBlock Text="____" Name="VehicleRegNum"></TextBlock>
+                            </StackPanel>
+                        </ListBoxItem>
+                    </ListBox>
+                </Grid>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10">
+                <Button Name="LeftArrow" Height="25" Width="25" Margin="0 0 10 0" Style="{DynamicResource ButtonLeftRight}" Content="🠘" Click="LeftArrow_Click"></Button>
+                <Button Name="RightArrow" Height="25" Width="25" Style="{DynamicResource ButtonLeftRight}" Content="🠚" Click="RightArrow_Click"></Button>
+            </StackPanel>
+        </StackPanel>
+        <Button Style="{DynamicResource ButtonStyleGoBack}" Grid.Column="1" Grid.Row="3" Cursor="Hand" FontSize="40" Foreground="White" Content="«" Name="GoBack" Click="GoBack_Click" RenderTransformOrigin="0.769,0.831" MaxHeight="50" MaxWidth="30" Margin="0,64,0,0" Grid.RowSpan="2">
+            <Button.Background>
+                <SolidColorBrush Color="Transparent"></SolidColorBrush>
+            </Button.Background>
+            <Button.BorderBrush>
+                <SolidColorBrush Color="Transparent"></SolidColorBrush>
+            </Button.BorderBrush>
+        </Button>
+    </Grid>
+</Window>

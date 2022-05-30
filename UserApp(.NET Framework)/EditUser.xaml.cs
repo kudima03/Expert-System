@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -25,17 +26,22 @@ namespace UserApp_.NET_Framework_
         int counter = 0;
         ParamToFindUser choosenParam;
         bool isEmpty = true;
-        private IAdminAccess module;
         List<DatabaseEntities.Client> clients;
         DatabaseEntities.Client clientBuffer;
+        private IAdminAccess module;
         public EditUser(IAdminAccess module)
         {
-            fileName = "defaultPhoto.png";
+            fileName = ConfigurationManager.AppSettings.Get("defaultPhotoPath");
             choosenParam = ParamToFindUser.Login;
             this.module = module;
             clients = module.GetAllClients();
             InitializeComponent();
-            Show(clients[0]);
+            if (clients.Count == 0)
+            {
+                MessageBox.Show("Нет данных!");
+            }
+            else
+                Show(clients[0]);
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)
@@ -71,6 +77,7 @@ namespace UserApp_.NET_Framework_
             {
                 module.ModifyClient(item);
             }
+            MessageBox.Show("Успешно!");
         }
 
         private void UserImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -101,6 +108,7 @@ namespace UserApp_.NET_Framework_
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             NewClient(clients[counter]);
+            MessageBox.Show("Изменения подтверждены");
         }
 
         private void FindUser_Click(object sender, RoutedEventArgs e)
@@ -110,7 +118,7 @@ namespace UserApp_.NET_Framework_
             {
                 case ParamToFindUser.Login:
                     {
-                        clientBuffer = module.FindClientByLogin(DataInput.Text);
+                        clientBuffer = module.FindClientByLogin(UserLogin.Text);
                         clients.Add(clientBuffer);
                         break;
                     }
@@ -174,6 +182,10 @@ namespace UserApp_.NET_Framework_
             {
                 MessageBox.Show("Не найдено!");
             }
+            else if (clients.Count == 1)
+            {
+                Show(clients[counter]);
+            }
             else
             {
                 if (counter + 1 == clients.Count)
@@ -192,7 +204,7 @@ namespace UserApp_.NET_Framework_
         {
             if (isEmpty)
             {
-                DataInput.Text = "";
+                UserLogin.Text = "";
                 isEmpty = false;
             }
         }

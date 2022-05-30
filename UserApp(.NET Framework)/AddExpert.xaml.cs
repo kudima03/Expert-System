@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace UserApp_.NET_Framework_
         private IAdminAccess module;
         public AddExpert(IAdminAccess module)
         {
-            fileName = "defaultPhoto.png";
+            fileName = ConfigurationManager.AppSettings.Get("defaultPhotoPath");
             this.module = module;
             InitializeComponent();
         }

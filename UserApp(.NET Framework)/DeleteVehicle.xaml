@@ -72,6 +72,12 @@
                     <ListBox Grid.Row="0" Grid.Column="1">
                         <ListBoxItem Margin="0 3">
                             <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Дилер: " Margin="0 0 10 0"></TextBlock>
+                                <TextBlock Text="____" Name="VehicleDealer"></TextBlock>
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem Margin="0 3">
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Модель: " Margin="0 0 10 0"></TextBlock>
                                 <TextBlock Text="____" Name="VehicleModel"></TextBlock>
                             </StackPanel>
@@ -82,12 +88,7 @@
                                 <TextBlock Text="____" Name="VehicleColor"></TextBlock>
                             </StackPanel>
                         </ListBoxItem>
-                        <ListBoxItem Margin="0 3">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Дилер: " Margin="0 0 10 0"></TextBlock>
-                                <TextBlock Text="____" Name="VehicleDealer"></TextBlock>
-                            </StackPanel>
-                        </ListBoxItem>
+
                         <ListBoxItem Margin="0 3">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Рейтинг: " Margin="0 0 10 0"></TextBlock>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +36,8 @@ namespace UserApp_.NET_Framework_
         }
         private void BackToAuth_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
+            module.PreviousRoom();
+            MainWindow mainWindow = new MainWindow(module as ClientConnectionModule);
             mainWindow.Show();
             this.Close();
         }
@@ -116,7 +118,7 @@ namespace UserApp_.NET_Framework_
             addAdmin.ShowDialog();
         }
 
-        private void BlockAdmin_Click(object sender, RoutedEventArgs e)
+      /*  private void BlockAdmin_Click(object sender, RoutedEventArgs e)
         {
             BlockAdmin blockAdmin = new BlockAdmin(module);
             blockAdmin.ShowDialog();
@@ -132,7 +134,7 @@ namespace UserApp_.NET_Framework_
         {
             DeleteAdmin deleteAdmin = new DeleteAdmin(module);
             deleteAdmin.ShowDialog();
-        }
+        }*/
 
         private void DeleteExpert_Click(object sender, RoutedEventArgs e)
         {
@@ -156,6 +158,33 @@ namespace UserApp_.NET_Framework_
         {
             FindAdmin findAdmin = new FindAdmin(module);
             findAdmin.ShowDialog();
+        }
+
+        private void Reports_Click(object sender, RoutedEventArgs e)
+        {
+            using (StreamWriter streamWriter = new StreamWriter("reportFile.txt", false))
+            {
+                streamWriter.Write(module.GetReportAboutVehicle());
+                MessageBox.Show("Отчёт создан!");
+            }
+        }
+
+        private void Sort_Click(object sender, RoutedEventArgs e)
+        {
+            Sort sort = new Sort(module);
+            sort.ShowDialog();
+        }
+
+        private void Filter_Click(object sender, RoutedEventArgs e)
+        {
+            Filtration filtration = new Filtration(module);
+            filtration.ShowDialog();
+        }
+
+        private void Diagram_Click(object sender, RoutedEventArgs e)
+        {
+            Diagram diag = new Diagram(module);
+            diag.ShowDialog();
         }
     }
 }

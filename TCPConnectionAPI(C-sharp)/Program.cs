@@ -21,6 +21,7 @@ namespace TCPConnectionAPI_C_sharp_
             catch (Exception ex)
             {
                 Console.WriteLine("Something went wrong" + ex);
+                Console.ReadLine();
             }
 
         }

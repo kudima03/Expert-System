@@ -70,6 +70,12 @@
                     <ListBox Grid.Row="0" Grid.Column="1">
                         <ListBoxItem Margin="0 3">
                             <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Дилер: " Margin="0 0 10 0"></TextBlock>
+                                <TextBlock Text="____" Name="VehicleDealer"></TextBlock>
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem Margin="0 3">
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Модель: " Margin="0 0 10 0"></TextBlock>
                                 <TextBlock Text="____" Name="VehicleModel"></TextBlock>
                             </StackPanel>
@@ -80,16 +86,11 @@
                                 <TextBlock Text="____" Name="VehicleColor"></TextBlock>
                             </StackPanel>
                         </ListBoxItem>
-                        <ListBoxItem Margin="0 3">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Дилер: " Margin="0 0 10 0"></TextBlock>
-                                <TextBlock Text="____" Name="VehicleDealer"></TextBlock>
-                            </StackPanel>
-                        </ListBoxItem>
+
                         <ListBoxItem Margin="0 3">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Ваша оценка: " Margin="0 0 10 0"></TextBlock>
-                                <TextBox Text="____" Name="VehicleTotalRate"></TextBox>
+                                <TextBox MaxLength="5" Text="____" Name="VehicleTotalRate"></TextBox>
                             </StackPanel>
                         </ListBoxItem>
                         <ListBoxItem Margin="0 3">
@@ -109,8 +110,7 @@
             </StackPanel>
         </StackPanel>
 
-        <Button Style="{DynamicResource ButtonStyleSubmit}" Grid.Row="3" MinHeight="30" MaxHeight="40" Grid.Column="3" MaxWidth="30" Click="SaveVehicle_Click" Cursor="Hand" Background="White" Content="Сохранить" MinWidth="80" BorderBrush="White"/>
-        <Button Style= "{DynamicResource ButtonStyleGoBack}" Grid.Column="1" Grid.Row="3" Cursor="Hand" FontSize="40" Foreground="White" Content="«" Name="GoBack" Click="GoBack_Click" RenderTransformOrigin="0.5,0.5" MaxHeight="50" MaxWidth="30" Margin="0,85,0,0" Grid.RowSpan="2">
+     <Button Style= "{DynamicResource ButtonStyleGoBack}" Grid.Column="1" Grid.Row="3" Cursor="Hand" FontSize="40" Foreground="White" Content="«" Name="GoBack" Click="GoBack_Click" RenderTransformOrigin="0.5,0.5" MaxHeight="50" MaxWidth="30" Margin="0,85,0,0" Grid.RowSpan="2">
             <Button.Background>
                 <SolidColorBrush Color="Transparent"></SolidColorBrush>
             </Button.Background>

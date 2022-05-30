@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,8 +37,23 @@ namespace UserApp_.NET_Framework_
             this.module = module;
             clients = module.GetAllClients();
             InitializeComponent();
-            Show(clients[0]);
+            if (clients.Count == 0)
+            {
+                MessageBox.Show("Нет данных!");
+            }
+            else
+                Show(clients[0]);
         }
+
+        private void UserLoginInput_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (isEmpty)
+            {
+                DataInput.Text = "";
+                isEmpty = false;
+            }
+        }
+
         private void Show(DatabaseEntities.Client client)
         {
             if (client == null)
@@ -50,16 +64,35 @@ namespace UserApp_.NET_Framework_
             {
                 UserImage.Source = App.ConvertToBitmapImage(client.Photo);
                 UserLogin.Text = client.Login;
-                UserStatus.Text = client.UserStatus.ToString();
+                
+                switch (client.UserStatus)
+                {
+                    case DatabaseEntities.Status.Banned:
+                        {
+                            UserStatus.Text = "Заблокирован";
+                            break;
+                        }
+                    case DatabaseEntities.Status.NotBanned:
+                        {
+                            UserStatus.Text = "Без оганичений";
+                            break;
+                        }
+                    default:
+                        {
+                            UserStatus.Text = client.UserStatus.ToString();
+                            break;
+                        }
+                }
                 if (client.IsOnline)
                 {
                     UserLastOnline.Text = "В сети";
                 }
                 else
                 {
+
                     UserLastOnline.Text = client.LastOnline.ToString();
                 }
-                
+
             }
         }
         private void GoBack_Click(object sender, RoutedEventArgs e)
@@ -138,6 +171,10 @@ namespace UserApp_.NET_Framework_
             {
                 MessageBox.Show("Не найдено!");
             }
+            else if (clients.Count == 1)
+            {
+                Show(clients[counter]);
+            }
             else
             {
                 if (counter + 1 == clients.Count)
@@ -149,15 +186,6 @@ namespace UserApp_.NET_Framework_
                     counter++;
                     Show(clients[counter]);
                 }
-            }
-        }
-
-        private void DataInput_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (isEmpty)
-            {
-                DataInput.Text = "";
-                isEmpty = false;
             }
         }
     }

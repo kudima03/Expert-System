@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace UserApp_.NET_Framework_
         private ClientConnectionModule module;
         public Registration(ClientConnectionModule module)
         {
-            fileName = "defaultImage.jpg";
+            fileName = ConfigurationManager.AppSettings.Get("defaultPhotoPath");
             this.module = module;
             InitializeComponent();
         }

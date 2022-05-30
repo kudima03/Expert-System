@@ -39,7 +39,12 @@ namespace UserApp_.NET_Framework_
             this.module = module;
             vehicles = module.GetAllVehicles();
             InitializeComponent();
-            Show(vehicles[0]);
+            if (vehicles.Count == 0)
+            {
+                MessageBox.Show("Нет данных!");
+            }
+            else
+                Show(vehicles[0]);
         }
         private void Show(DatabaseEntities.Vehicle vehicle)
         {
@@ -51,7 +56,7 @@ namespace UserApp_.NET_Framework_
             {
                 VehicleImage.Source = App.ConvertToBitmapImage(vehicle.Photo);
                 VehicleModel.Text = vehicle.Model;
-                VehicleTotalRate.Text = vehicle.TotalRate.ToString();
+                VehicleTotalRate.Text = Math.Round(vehicle.TotalRate, 3).ToString();
                 VehicleRegNum.Text = vehicle.RegistrationNumber.ToString();
                 VehicleDealer.Text = vehicle.Dealer;
                 VehicleColor.Text = vehicle.Colour;
@@ -137,6 +142,10 @@ namespace UserApp_.NET_Framework_
             if (vehicles.Count == 0)
             {
                 MessageBox.Show("Не найдено!");
+            }
+            else if (vehicles.Count == 1)
+            {
+                Show(vehicles[counter]);
             }
             else
             {

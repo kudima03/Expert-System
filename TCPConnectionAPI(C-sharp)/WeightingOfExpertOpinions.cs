@@ -5,19 +5,39 @@ namespace TCPConnectionAPI_C_sharp_
 {
     public class WeightingOfExpertOpinions : IExpertMethod
     {
-        public IRateable Rate(IRateable obj, Expert expert, float rate)
+        IDataModifyPermission dbConnection = new DatabaseContext();
+        public void Rate(ref Vehicle obj, Expert expert, float rate)
         {
-            Rate newRate = new Rate(expert.RateWeight / (obj.Rate.Count + 1));
+            Rate newRate = new Rate(rate * expert.RateWeight);
             newRate.Expert = expert;
+            newRate.Vehicle = obj;
             newRate.TimeOfCommit = DateTime.Now;
             obj.Rate.Add(newRate);
-            double sum = 0;
-            foreach (var item in obj.Rate)
+            dbConnection.UpdateVehicle(obj);
+            Recount();
+
+        }
+        public void Recount()
+        {
+            var allEntities = dbConnection.FindVehiclesWhere(c => c != null);
+            double rateSum = 0;
+            foreach (var entity in allEntities)
             {
-                sum += item.Value;
+                foreach (var rate in entity.Rate)
+                {
+                    rateSum += rate.Value;
+                }
             }
-            obj.TotalRate = sum;
-            return obj;
+            foreach (var item in allEntities)
+            {
+                double currentEntityRate = 0;
+                foreach (var currentRate in item.Rate)
+                {
+                    currentEntityRate += currentRate.Value;
+                }
+                item.TotalRate = currentEntityRate / rateSum;
+                dbConnection.UpdateVehicle(item);
+            }
         }
     }
 }

@@ -31,7 +31,12 @@ namespace UserApp_.NET_Framework_
             this.module = module;
             clients = module.GetAllClients();
             InitializeComponent();
-            Show(clients[0]);
+            if (clients.Count == 0)
+            {
+                MessageBox.Show("Нет данных!");
+            }
+            else
+                Show(clients[0]);
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)
@@ -108,6 +113,8 @@ namespace UserApp_.NET_Framework_
 
         private void LeftArrow_Click(object sender, RoutedEventArgs e)
         {
+            clients.Clear();
+            clients = module.GetAllClients();
             if (clients.Count == 0)
             {
                 MessageBox.Show("Не найдено!");
@@ -128,9 +135,15 @@ namespace UserApp_.NET_Framework_
 
         private void RightArrow_Click(object sender, RoutedEventArgs e)
         {
+            clients.Clear();
+            clients = module.GetAllClients();
             if (clients.Count == 0)
             {
                 MessageBox.Show("Не найдено!");
+            }
+            else if (clients.Count == 1)
+            {
+                Show(clients[0]);
             }
             else
             {
@@ -156,7 +169,18 @@ namespace UserApp_.NET_Framework_
 
         private void DeleteUserButton_Click(object sender, RoutedEventArgs e)
         {
-            module.DeleteClientWith(clients[counter].Login);
+            if (clients.Count == 0)
+                MessageBox.Show("Ошибка!");
+            else if (clients.Count == 1)
+            {
+                module.DeleteClientWith(clients[0].Login);
+                MessageBox.Show("Удаление успешно!");
+            }
+            else
+            {
+                module.DeleteClientWith(clients[counter].Login);
+                MessageBox.Show("Удаление успешно!");
+            }
         }
     }
 }

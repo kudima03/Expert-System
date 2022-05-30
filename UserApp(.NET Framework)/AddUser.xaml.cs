@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace UserApp_.NET_Framework_
         private IAdminAccess module;
         public AddUser(IAdminAccess module)
         {
-            fileName = "defaultPhoto.jpg";
+            fileName = ConfigurationManager.AppSettings.Get("defaultPhotoPath");
             this.module = module;
             InitializeComponent();
         }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,12 +32,65 @@ namespace UserApp_.NET_Framework_
             this.module = module;
             vehicles = module.GetAllVehicles();
             InitializeComponent();
-            Show(vehicles[0]);
+            if (vehicles.Count == 0)
+            {
+                MessageBox.Show("Нет данных!");
+            }
+            else
+                Show(vehicles[0]);
         }
 
         private void DeleteVehicle_Click(object sender, RoutedEventArgs e)
         {
-            module.DeleteVehicle(vehicles[counter].Id);
+            if (vehicles.Count == 0)
+                MessageBox.Show("Ошибка!");
+            else
+            {
+                switch (module.DeleteVehicle(vehicles[counter].Id))
+                {
+                    case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Successfully:
+                        {
+                            MessageBox.Show("Удаление успешно!");
+                            vehicles.Remove(vehicles[counter]);
+                            break;
+                        }
+                    case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Error:
+                        {
+                            MessageBox.Show("Ошибка удаления!");
+                            break;
+                        }
+                    case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.UnknownCommand:
+                        break;
+                    default:
+                        break;
+                }
+                
+                if (counter + 1 == vehicles.Count)
+                {
+                    Show(vehicles[counter]);
+                }
+                else if(counter == vehicles.Count)
+                {
+                    VehicleImage.Source = App.ConvertToBitmapImage(new Bitmap(ConfigurationManager.AppSettings.Get("defaultPhotoPath")));
+                    VehicleModel.Text = "";
+                    VehicleTotalRate.Text = "";
+                    VehicleRegNum.Text = "";
+                    VehicleDealer.Text = "";
+                    VehicleColor.Text = "";
+                    MessageBox.Show("Все элементы были удалены");
+                }
+                else if (counter + 1 > vehicles.Count)
+                {
+                    MessageBox.Show("Ошибка!");
+                }
+                else
+                {
+                    counter++;
+                    Show(vehicles[counter]);
+                }
+            }
+            vehicles.Clear();
+            vehicles = module.GetAllVehicles();
         }
         private void Show(DatabaseEntities.Vehicle vehicle)
         {
@@ -47,7 +102,7 @@ namespace UserApp_.NET_Framework_
             {
                 VehicleImage.Source = App.ConvertToBitmapImage(vehicle.Photo);
                 VehicleModel.Text = vehicle.Model;
-                VehicleTotalRate.Text = vehicle.TotalRate.ToString();
+                VehicleTotalRate.Text = Math.Round(vehicle.TotalRate, 3).ToString();
                 VehicleRegNum.Text = vehicle.RegistrationNumber.ToString();
                 VehicleDealer.Text = vehicle.Dealer;
                 VehicleColor.Text = vehicle.Colour;
@@ -110,6 +165,8 @@ namespace UserApp_.NET_Framework_
         }
         private void LeftArrow_Click(object sender, RoutedEventArgs e)
         {
+            vehicles.Clear();
+            vehicles = module.GetAllVehicles();
             if (vehicles.Count == 0)
             {
                 MessageBox.Show("Не найдено!");
@@ -130,9 +187,15 @@ namespace UserApp_.NET_Framework_
 
         private void RightArrow_Click(object sender, RoutedEventArgs e)
         {
+            vehicles.Clear();
+            vehicles = module.GetAllVehicles();
             if (vehicles.Count == 0)
             {
                 MessageBox.Show("Не найдено!");
+            }
+            else if (vehicles.Count == 1)
+            {
+                Show(vehicles[counter]);
             }
             else
             {

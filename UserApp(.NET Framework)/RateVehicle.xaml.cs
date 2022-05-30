@@ -32,7 +32,10 @@ namespace UserApp_.NET_Framework_
             this.module = module;
             vehicles = module.GetAllVehicles();
             InitializeComponent();
-            Show(vehicles[0]);
+            if (vehicles.Count == 0)
+                MessageBox.Show("Нет данных!");
+            else
+                Show(vehicles[0]);
         }
 
         private void Show(DatabaseEntities.Vehicle vehicle)
@@ -59,24 +62,29 @@ namespace UserApp_.NET_Framework_
             }
             else
             {
-                var answer = module.RateVehicle(vehicles[counter].Id, float.Parse(VehicleTotalRate.Text));
-                switch (answer)
+                if (float.Parse(VehicleTotalRate.Text) >= 0 && float.Parse(VehicleTotalRate.Text) <= 10)
                 {
-                    case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Successfully:
-                        {
-                            MessageBox.Show("Успешно");
+                    switch (module.RateVehicle(vehicles[counter].Id, float.Parse(VehicleTotalRate.Text)))
+                    {
+                        case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Successfully:
+                            {
+                                MessageBox.Show("Успешно");
+                                break;
+                            }
+                        case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Error:
+                            {
+                                MessageBox.Show("Ошибка!");
+                                break;
+                            }
+                        case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.UnknownCommand:
                             break;
-                        }
-                    case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Error:
-                        {
-                            MessageBox.Show("Ошибка");
+                        default:
                             break;
-                        }
-                    case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.UnknownCommand:
-                        break;
-                    default:
-                        break;
+                    }
                 }
+
+                else
+                    MessageBox.Show("Значение оценки\nвне допустимого предела!\nПредел от 1 до 10.");
             }
         }
         private void FindVehicle_Click(object sender, RoutedEventArgs e)
@@ -136,6 +144,8 @@ namespace UserApp_.NET_Framework_
         }
         private void LeftArrow_Click(object sender, RoutedEventArgs e)
         {
+            vehicles.Clear();
+            vehicles = module.GetAllVehicles();
             if (vehicles.Count == 0)
             {
                 MessageBox.Show("Не найдено!");
@@ -156,6 +166,8 @@ namespace UserApp_.NET_Framework_
 
         private void RightArrow_Click(object sender, RoutedEventArgs e)
         {
+            vehicles.Clear();
+            vehicles = module.GetAllVehicles();
             if (vehicles.Count == 0)
             {
                 MessageBox.Show("Не найдено!");
@@ -222,11 +234,6 @@ namespace UserApp_.NET_Framework_
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             NewVehicle(vehicles[counter]);
-        }
-
-        private void SaveVehicle_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

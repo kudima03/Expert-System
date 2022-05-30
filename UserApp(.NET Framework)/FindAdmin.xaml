@@ -28,34 +28,27 @@
         <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" FontWeight="Bold" Foreground="White" FontSize="35">Поиск администратора</TextBlock>
         <TextBox PreviewMouseDown="AdminLoginInput_PreviewMouseDown"  Style="{DynamicResource TextBoxStyleInput}" FontSize="16" MinWidth="340" HorizontalAlignment="Left" VerticalAlignment="Center" MinHeight="40" Name="AdminLoginInput" Grid.Row="2" Grid.Column="2" Padding="3 5" Text="Введите логин" Background="White"></TextBox>
         <Button Style="{DynamicResource ButtonStyleSubmit}" MaxHeight="40" Grid.Row="2" Grid.Column="3" MaxWidth="20" Click="FindAdmin_Click" Cursor="Hand" Background="White" Content="Найти" MinWidth="80" BorderBrush="White"/>
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Row="3" Grid.Column="2">
-            <StackPanel VerticalAlignment="Top" Orientation="Vertical" Width="380" HorizontalAlignment="Left">
-                <StackPanel>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="100"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Image Grid.Column="0" Grid.Row="0" Source="Resources/defaultPhoto.png"/>
-                        <ListBox Grid.Row="0" Grid.Column="1">
-                            <ListBoxItem>
-                                <TextBlock Text="Логин"></TextBlock>
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <TextBlock Text="Статус"></TextBlock>
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <TextBlock Text="Последний онлайн"></TextBlock>
-                            </ListBoxItem>
-                        </ListBox>
-                    </Grid>
+        <Image  HorizontalAlignment="Left" Margin="0 0 2 0" Grid.Column="2" Grid.Row="3" Source="Resources/defaultPhoto.png" Name="UserImage"/>
+        <ListBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Margin="120.4,70,130,0.4" Grid.RowSpan="2">
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Логин: " Margin="0 0 10 0"></TextBlock>
+                    <TextBlock Text="____" Name="UserLogin"></TextBlock>
                 </StackPanel>
-            </StackPanel>
-        </ScrollViewer>
+            </ListBoxItem>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Статус: " Margin="0 0 10 0"></TextBlock>
+                    <TextBlock Text="____" Name="UserStatus"></TextBlock>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Последний онлайн: " Margin="0 0 10 0"></TextBlock>
+                    <TextBlock Text="____" Name="UserLastOnline"></TextBlock>
+                </StackPanel>
+            </ListBoxItem>
+        </ListBox>
         <Button Style= "{DynamicResource ButtonStyleGoBack}" Grid.Column="1" Grid.Row="3" Cursor="Hand" FontSize="40" Foreground="White" Content="«" Name="GoBack" Click="GoBack_Click" RenderTransformOrigin="0.5,0.5" MaxHeight="50" MaxWidth="30" Margin="0,68,0,0" Grid.RowSpan="2">
             <Button.Background>
                 <SolidColorBrush Color="Transparent"></SolidColorBrush>

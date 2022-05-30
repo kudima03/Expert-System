@@ -39,5 +39,16 @@ namespace UserApp_.NET_Framework_
             FindVehicle findVehicle = new FindVehicle(module);
             findVehicle.ShowDialog();
         }
+        private void Sort_Click(object sender, RoutedEventArgs e)
+        {
+            Sort sort = new Sort(module);
+            sort.ShowDialog();
+        }
+
+        private void Filter_Click(object sender, RoutedEventArgs e)
+        {
+            Filtration filtration = new Filtration(module);
+            filtration.ShowDialog();
+        }
     }
 }

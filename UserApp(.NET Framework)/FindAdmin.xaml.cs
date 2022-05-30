@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DatabaseEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,8 @@ namespace UserApp_.NET_Framework_
 
         private void FindAdmin_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            var admin = module.FindAdminByLogin(AdminLoginInput.Text);
+            Show(admin);
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)
@@ -37,6 +39,47 @@ namespace UserApp_.NET_Framework_
 
         }
 
+        private void Show(Admin admin)
+        {
+            if (admin == null || admin.Login == "empty")
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else
+            {
+                UserImage.Source = App.ConvertToBitmapImage(admin.Photo);
+                UserLogin.Text = admin.Login;
+
+                switch (admin.UserStatus)
+                {
+                    case Status.Banned:
+                        {
+                            UserStatus.Text = "Заблокирован";
+                            break;
+                        }
+                    case Status.NotBanned:
+                        {
+                            UserStatus.Text = "Без оганичений";
+                            break;
+                        }
+                    default:
+                        {
+                            UserStatus.Text = admin.UserStatus.ToString();
+                            break;
+                        }
+                }
+                if (admin.IsOnline)
+                {
+                    UserLastOnline.Text = "В сети";
+                }
+                else
+                {
+
+                    UserLastOnline.Text = admin.LastOnline.ToString();
+                }
+
+            }
+        }
         private void AdminLoginInput_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (isEmpty)

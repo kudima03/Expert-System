@@ -42,7 +42,7 @@
             </MenuItem>
         </Menu>
 
-        <TextBox  Margin="0 30 0 0" PreviewMouseDown="DataInput_PreviewMouseDown" Style="{DynamicResource TextBoxStyleInput}" FontSize="16" MinWidth="400" HorizontalAlignment="Left" VerticalAlignment="Center" MinHeight="40" Name="DataInput" Grid.Row="2" Grid.Column="2" Padding="3 5" Text="Введите данные" Background="White"></TextBox>
+        <TextBox  Margin="0 30 0 0" PreviewMouseDown="UserLoginInput_PreviewMouseDown" Style="{DynamicResource TextBoxStyleInput}" FontSize="16" MinWidth="400" HorizontalAlignment="Left" VerticalAlignment="Center" MinHeight="40" Name="DataInput" Grid.Row="2" Grid.Column="2" Padding="3 5" Text="Введите данные" Background="White"></TextBox>
         <Button Style="{DynamicResource ButtonStyleSubmit}" MaxHeight="40" Grid.Row="2" Grid.Column="3" MaxWidth="20" Click="FindUser_Click" Cursor="Hand" Background="White" Content="Найти" MinWidth="80" BorderBrush="White"/>
         <StackPanel Grid.Column="2" Grid.Row="3" VerticalAlignment="Top" Orientation="Vertical" Width="380" HorizontalAlignment="Left">
             <StackPanel>
