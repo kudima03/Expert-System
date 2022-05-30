@@ -21,15 +21,24 @@
             <ColumnDefinition Width="60"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" FontWeight="Bold" Foreground="White" FontSize="30">Главная</TextBlock>
+        <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" FontWeight="Bold" Foreground="White" FontSize="30">Главная</TextBlock>
         <Button Style= "{DynamicResource ButtonStyleGoBack}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="0" Cursor="Hand" FontSize="40" Foreground="White" Content="«" x:Name="GoBack" Click="GoBack_Click" RenderTransformOrigin="0.5,0.5" MaxHeight="50" MaxWidth="30" Background="Transparent" BorderBrush="Transparent" Margin="0,-12,0,0"/>
-        <Menu Style="{DynamicResource MenuStyle}" HorizontalAlignment="Left" MaxWidth="250" MaxHeight="150" Grid.Row="1" Grid.Column="1" Name="MainMenu">
+        <Menu Style="{DynamicResource MenuStyle}" HorizontalAlignment="Center" Width="500"  Grid.Row="1" Grid.Column="1" Name="MainMenu">
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel Orientation="Vertical"/>
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
-            <MenuItem Cursor="Hand" Margin="0 4 0 0" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Действия с пользователями">
+            <MenuItem Cursor="Hand" HorizontalAlignment="Center" Height="35" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Действия с транспортными средствами">
+                <Button Padding="6 2" Margin="-4 0 0 0" Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Найти" Name="FindVehicle" Click="FindVehicle_Click">
+                </Button>
+                <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Добавить" Name="AddVehicle" Click="AddVehicle_Click"></Button>
+                <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Отредактировать" Name="EditVehicle" Click="EditVehicle_Click"></Button>
+                <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Удалить" Name="DeleteVehicle" Click="DeleteVehicle_Click"></Button>
+                <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Сортировать" Name="Sort" Click="Sort_Click"></Button>
+                <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Фильтровать" Name="Filter" Click="Filter_Click"></Button>
+            </MenuItem>
+            <MenuItem Cursor="Hand" HorizontalAlignment="Center" Height="35" Margin="0 4 0 0" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Действия с пользователями">
                 <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Найти" Name="FindUser" Click="FindUser_Click"></Button>
                 <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Добавить" Name="AddUser" Click="AddUser_Click"></Button>
                 <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Отредактировать" Name="EditUser" Click="EditUser_Click"></Button>
@@ -37,34 +46,24 @@
                 <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Разблокировать" Name="UnblockUser" Click="UnblockUser_Click"></Button>
                 <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Удалить" Name="DeleteUser" Click="DeleteUser_Click"></Button>
             </MenuItem>
-            <MenuItem Cursor="Hand" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Действия с транспортными средствами">
-                <Button Padding="6 2" Margin="-4 0 0 0" Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Найти" Name="FindVehicle" Click="FindVehicle_Click">
-                </Button>
-                <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Добавить" Name="AddVehicle" Click="AddVehicle_Click"></Button>
-                <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Отредактировать" Name="EditVehicle" Click="EditVehicle_Click"></Button>
-                <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Удалить" Name="DeleteVehicle" Click="DeleteVehicle_Click"></Button>
-            </MenuItem>
-            <MenuItem Cursor="Hand" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Действия с экспертами">
+            <MenuItem Cursor="Hand" HorizontalAlignment="Center" Height="35" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Действия с экспертами">
                 <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Добавить" Click="AddExpert_Click" Name="AddExpert"></Button>
                 <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Заблокировать" Name="BlockExpert" Click="BlockExpert_Click"></Button>
                 <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Разблокировать" Name="UnblockExpert" Click="UnblockExpert_Click"></Button>
                 <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Найти" Name="FindExpert" Click="FindExpert_Click"></Button>
                 <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Удалить" Name="DeleteExpert" Click="DeleteExpert_Click"></Button>
             </MenuItem>
-            <MenuItem Cursor="Hand" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Действия с администраторами">
+            <MenuItem Cursor="Hand" HorizontalAlignment="Center" Height="35" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Действия с администраторами">
                 <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Добавить" Name="AddAdmin" Click="AddAdmin_Click"></Button>
-                <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Заблокировать" Name="BlockAdmin" Click="BlockAdmin_Click"></Button>
-                <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Разблокировать" Name="UnblockAdmin" Click="UnblockAdmin_Click"></Button>
                 <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Найти" Name="FindAdmin" Click="FindAdmin_Click"></Button>
-                <Button Style="{DynamicResource ButtonStyleButtonSubmit}" Cursor="Hand" Content="Удалить" Name="DeleteAdmin" Click="DeleteAdmin_Click"></Button>
             </MenuItem>
-            <MenuItem Cursor="Hand" Style="{DynamicResource MenuItemStyle}" Header="Статистика">
+            <MenuItem Name="Reports" HorizontalAlignment="Center" Height="35" Click="Reports_Click" Cursor="Hand" Style="{DynamicResource MenuItemStyle}" Header="Создать отчёт">
 
             </MenuItem>
-            <MenuItem Cursor="Hand" Style="{DynamicResource MenuItemStyle}" Header="Отчёты">
-
+            <MenuItem Name="Diagram" HorizontalAlignment="Center" Height="35" Click="Diagram_Click" Cursor="Hand" Style="{DynamicResource MenuItemStyle}" Header="Просмотреть диаграмму">
+                
             </MenuItem>
-            <MenuItem Cursor="Hand" Margin="0 0 0 4" Style="{DynamicResource MenuItemStyle}"  Header="Выход" Name="BackToAuth" Click="BackToAuth_Click">
+            <MenuItem Cursor="Hand" HorizontalAlignment="Center" Height="35" Margin="0 0 0 4" Style="{DynamicResource MenuItemStyle}"  Header="Выход" Name="BackToAuth" Click="BackToAuth_Click">
 
             </MenuItem>
         </Menu>

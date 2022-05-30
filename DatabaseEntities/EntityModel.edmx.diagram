@@ -8,11 +8,11 @@
         <EntityTypeShape EntityType="EntityModel.Admin" Width="1.5" PointX="4.375" PointY="1.25" />
         <EntityTypeShape EntityType="EntityModel.Client" Width="1.5" PointX="2.25" PointY="1.25" />
         <EntityTypeShape EntityType="EntityModel.Expert" Width="1.5" PointX="7.125" PointY="1.25" />
-        <EntityTypeShape EntityType="EntityModel.Vehicle" Width="1.5" PointX="7.125" PointY="3.875" />
-        <EntityTypeShape EntityType="EntityModel.Rate" Width="1.5" PointX="9.875" PointY="1.875" />
-        <AssociationConnector Association="EntityModel.ExpertRate" />
+        <EntityTypeShape EntityType="EntityModel.Vehicle" Width="1.5" PointX="7.125" PointY="4.25" />
+        <EntityTypeShape EntityType="EntityModel.Rate" Width="1.5" PointX="9.875" PointY="2.5" />
         <AssociationConnector Association="EntityModel.VehicleRate" />
-      </Diagram>
+        <AssociationConnector Association="EntityModel.ExpertRate" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

@@ -144,7 +144,7 @@ namespace TCPConnectionAPIClientModule_C_sharp_
 
         public AnswerFromServer UnbanClientWith(string login)
         {
-            protocol.SendCommand(CommandsToServer.UnbanExpert);
+            protocol.SendCommand(CommandsToServer.UnbanClient);
             protocol.SendLogin(login);
             return protocol.ReceiveAnswerFromServer();
         }

@@ -7,22 +7,17 @@
     <Schema Namespace="EntityModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="EntityModelStoreContainer">
     <EntitySet Name="VehicleSet" EntityType="EntityModel.Store.VehicleSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="RateSet" EntityType="EntityModel.Store.RateSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="AdminSet" EntityType="EntityModel.Store.AdminSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ClientSet" EntityType="EntityModel.Store.ClientSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ExpertSet" EntityType="EntityModel.Store.ExpertSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="VehicleRate" EntityType="EntityModel.Store.VehicleRate" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RateSet" EntityType="EntityModel.Store.RateSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="VehicleRate" Association="EntityModel.Store.VehicleRate">
+      <End Role="Vehicle" EntitySet="VehicleSet" />
+      <End Role="Rate" EntitySet="RateSet" />
+    </AssociationSet>
     <AssociationSet Name="ExpertRate" Association="EntityModel.Store.ExpertRate">
       <End Role="Expert" EntitySet="ExpertSet" />
       <End Role="Rate" EntitySet="RateSet" />
-    </AssociationSet>
-    <AssociationSet Name="FK_VehicleRate_Vehicle" Association="EntityModel.Store.FK_VehicleRate_Vehicle">
-      <End Role="Vehicle" EntitySet="VehicleSet" />
-      <End Role="VehicleRate" EntitySet="VehicleRate" />
-    </AssociationSet>
-    <AssociationSet Name="FK_VehicleRate_Rate" Association="EntityModel.Store.FK_VehicleRate_Rate">
-      <End Role="Rate" EntitySet="RateSet" />
-      <End Role="VehicleRate" EntitySet="VehicleRate" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="VehicleSet">
@@ -36,15 +31,6 @@
     <Property Name="RegistrationNumber" Type="nvarchar(max)" Nullable="false" />
     <Property Name="TotalRate" Type="float" Nullable="false" />
     <Property Name="BinaryPhoto" Type="varbinary(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="RateSet">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Value" Type="float" Nullable="false" />
-    <Property Name="TimeOfCommit" Type="datetime" Nullable="false" />
-    <Property Name="Expert_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="AdminSet">
     <Key>
@@ -80,47 +66,41 @@
     <Property Name="BinaryPhoto" Type="varbinary(max)" Nullable="false" />
     <Property Name="LastOnline" Type="datetime" Nullable="false" />
   </EntityType>
-  <EntityType Name="VehicleRate">
+  <EntityType Name="RateSet">
     <Key>
-      <PropertyRef Name="Vehicle_Id" />
-      <PropertyRef Name="Rate_Id" />
+      <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Vehicle_Id" Type="int" Nullable="false" />
-    <Property Name="Rate_Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Value" Type="float" Nullable="false" />
+    <Property Name="TimeOfCommit" Type="datetime" Nullable="false" />
+    <Property Name="VehicleId" Type="int" Nullable="false" />
+    <Property Name="ExpertId" Type="int" Nullable="false" />
   </EntityType>
+  <Association Name="VehicleRate">
+    <End Role="Vehicle" Type="EntityModel.Store.VehicleSet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Rate" Type="EntityModel.Store.RateSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicle">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Rate">
+        <PropertyRef Name="VehicleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="ExpertRate">
-    <End Role="Expert" Type="EntityModel.Store.ExpertSet" Multiplicity="1" />
+    <End Role="Expert" Type="EntityModel.Store.ExpertSet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="Rate" Type="EntityModel.Store.RateSet" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Expert">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Rate">
-        <PropertyRef Name="Expert_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_VehicleRate_Vehicle">
-    <End Role="Vehicle" Type="EntityModel.Store.VehicleSet" Multiplicity="1" />
-    <End Role="VehicleRate" Type="EntityModel.Store.VehicleRate" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Vehicle">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="VehicleRate">
-        <PropertyRef Name="Vehicle_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_VehicleRate_Rate">
-    <End Role="VehicleRate" Type="EntityModel.Store.VehicleRate" Multiplicity="*" />
-    <End Role="Rate" Type="EntityModel.Store.RateSet" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="Rate">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="VehicleRate">
-        <PropertyRef Name="Rate_Id" />
+        <PropertyRef Name="ExpertId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -130,19 +110,19 @@
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="EntityModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="EntityModelContainer1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="VehicleSet" EntityType="EntityModel.Vehicle" />
+          <EntitySet Name="AdminSet" EntityType="EntityModel.Admin" />
+          <EntitySet Name="ClientSet" EntityType="EntityModel.Client" />
+          <EntitySet Name="ExpertSet" EntityType="EntityModel.Expert" />
           <EntitySet Name="RateSet" EntityType="EntityModel.Rate" />
-          <AssociationSet Name="ExpertRate" Association="EntityModel.ExpertRate">
-            <End Role="Expert" EntitySet="ExpertSet" />
-            <End Role="Rate" EntitySet="RateSet" />
-          </AssociationSet>
           <AssociationSet Name="VehicleRate" Association="EntityModel.VehicleRate">
             <End Role="Vehicle" EntitySet="VehicleSet" />
             <End Role="Rate" EntitySet="RateSet" />
           </AssociationSet>
-          <EntitySet Name="AdminSet" EntityType="EntityModel.Admin" />
-          <EntitySet Name="ClientSet" EntityType="EntityModel.Client" />
-          <EntitySet Name="ExpertSet" EntityType="EntityModel.Expert" />
-        </EntityContainer>
+          <AssociationSet Name="ExpertRate" Association="EntityModel.ExpertRate">
+            <End Role="Expert" EntitySet="ExpertSet" />
+            <End Role="Rate" EntitySet="RateSet" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="Admin">
           <Key>
             <PropertyRef Name="Id" />
@@ -170,13 +150,13 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="RateWeight" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Rate" Relationship="EntityModel.ExpertRate" FromRole="Expert" ToRole="Rate" />
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Password" Type="String" Nullable="false" />
           <Property Name="Login" Type="String" Nullable="false" />
           <Property Name="UserStatus" Type="EntityModel.Status" Nullable="false" />
           <Property Name="BinaryPhoto" Type="Binary" Nullable="false" />
           <Property Name="LastOnline" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Rate" Relationship="EntityModel.ExpertRate" FromRole="Expert" ToRole="Rate" />
         </EntityType>
         <EntityType Name="Vehicle">
           <Key>
@@ -188,32 +168,54 @@
           <Property Name="Colour" Type="String" Nullable="false" />
           <Property Name="RegistrationNumber" Type="String" Nullable="false" />
           <Property Name="TotalRate" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Rate" Relationship="EntityModel.VehicleRate" FromRole="Vehicle" ToRole="Rate" />
           <Property Name="BinaryPhoto" Type="Binary" Nullable="false" />
+          <NavigationProperty Name="Rate" Relationship="EntityModel.VehicleRate" FromRole="Vehicle" ToRole="Rate" />
         </EntityType>
+        <EnumType Name="Status">
+          <Member Name="Banned" />
+          <Member Name="NotBanned" />
+        </EnumType>
         <EntityType Name="Rate">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Value" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Expert" Relationship="EntityModel.ExpertRate" FromRole="Rate" ToRole="Expert" />
-          <NavigationProperty Name="Vehicle" Relationship="EntityModel.VehicleRate" FromRole="Rate" ToRole="Vehicle" />
           <Property Name="TimeOfCommit" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Vehicle" Relationship="EntityModel.VehicleRate" FromRole="Rate" ToRole="Vehicle" />
+          <Property Name="VehicleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Expert" Relationship="EntityModel.ExpertRate" FromRole="Rate" ToRole="Expert" />
+          <Property Name="ExpertId" Type="Int32" Nullable="false" />
         </EntityType>
-        <Association Name="ExpertRate">
-          <End Type="EntityModel.Expert" Role="Expert" Multiplicity="1" />
-          <End Type="EntityModel.Rate" Role="Rate" Multiplicity="*" />
-        </Association>
         <Association Name="VehicleRate">
-          <End Type="EntityModel.Vehicle" Role="Vehicle" Multiplicity="*" />
+          <End Type="EntityModel.Vehicle" Role="Vehicle" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="EntityModel.Rate" Role="Rate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rate">
+              <PropertyRef Name="VehicleId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
-        <EnumType Name="Status">
-          <Member Name="Banned" />
-          <Member Name="NotBanned" />
-        </EnumType>
-      </Schema>
+        <Association Name="ExpertRate">
+          <End Type="EntityModel.Expert" Role="Expert" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="EntityModel.Rate" Role="Rate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Expert">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rate">
+              <PropertyRef Name="ExpertId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -229,15 +231,6 @@
           <ScalarProperty Name="RegistrationNumber" ColumnName="RegistrationNumber" />
           <ScalarProperty Name="TotalRate" ColumnName="TotalRate" />
           <ScalarProperty Name="BinaryPhoto" ColumnName="BinaryPhoto" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="RateSet">
-      <EntityTypeMapping TypeName="IsTypeOf(EntityModel.Rate)">
-        <MappingFragment StoreEntitySet="RateSet">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Value" ColumnName="Value" />
-          <ScalarProperty Name="TimeOfCommit" ColumnName="TimeOfCommit" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -278,22 +271,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="ExpertRate" TypeName="EntityModel.ExpertRate" StoreEntitySet="RateSet">
-      <EndProperty Name="Expert">
-        <ScalarProperty Name="Id" ColumnName="Expert_Id" />
-      </EndProperty>
-      <EndProperty Name="Rate">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="VehicleRate" TypeName="EntityModel.VehicleRate" StoreEntitySet="VehicleRate">
-      <EndProperty Name="Vehicle">
-        <ScalarProperty Name="Id" ColumnName="Vehicle_Id" />
-      </EndProperty>
-      <EndProperty Name="Rate">
-        <ScalarProperty Name="Id" ColumnName="Rate_Id" />
-      </EndProperty>
-    </AssociationSetMapping>
+    <EntitySetMapping Name="RateSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityModel.Rate)">
+        <MappingFragment StoreEntitySet="RateSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="TimeOfCommit" ColumnName="TimeOfCommit" />
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+          <ScalarProperty Name="ExpertId" ColumnName="ExpertId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

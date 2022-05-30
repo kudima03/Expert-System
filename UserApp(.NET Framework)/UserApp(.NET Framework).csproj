@@ -38,7 +38,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>D_5JS04LcBI.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -47,8 +48,15 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
@@ -102,6 +110,9 @@
     <Compile Include="DeleteVehicle.xaml.cs">
       <DependentUpon>DeleteVehicle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Diagram.xaml.cs">
+      <DependentUpon>Diagram.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditUser.xaml.cs">
       <DependentUpon>EditUser.xaml</DependentUpon>
     </Compile>
@@ -116,6 +127,9 @@
     </Compile>
     <Compile Include="ExpertTest.xaml.cs">
       <DependentUpon>ExpertTest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Filtration.xaml.cs">
+      <DependentUpon>Filtration.xaml</DependentUpon>
     </Compile>
     <Compile Include="FindAdmin.xaml.cs">
       <DependentUpon>FindAdmin.xaml</DependentUpon>
@@ -137,6 +151,9 @@
     </Compile>
     <Compile Include="Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Sort.xaml.cs">
+      <DependentUpon>Sort.xaml</DependentUpon>
     </Compile>
     <Compile Include="UnblockAdmin.xaml.cs">
       <DependentUpon>UnblockAdmin.xaml</DependentUpon>
@@ -194,6 +211,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Diagram.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EditUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -211,6 +232,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ExpertTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Filtration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -251,6 +276,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Registration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Sort.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -305,9 +334,6 @@
     <Resource Include="Resources\defaultPhoto.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="D_5JS04LcBI.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ClassLibraryForTCPConnectionAPI%28C-sharp%29\ClassLibraryForTCPConnectionAPI%28C-sharp%29.csproj">
       <Project>{f6c439da-c84e-48ea-87ca-25a35daba960}</Project>
       <Name>ClassLibraryForTCPConnectionAPI%28C-sharp%29</Name>
@@ -315,10 +341,6 @@
     <ProjectReference Include="..\DatabaseEntities\DatabaseEntities.csproj">
       <Project>{229c7e2e-f375-4512-a30b-9fecf5f5939e}</Project>
       <Name>DatabaseEntities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TCPConnectionAPI%28C-sharp%29\TCPConnectionAPIServer%28C-sharp%29.csproj">
-      <Project>{8d5cc562-ef8c-4b9b-882f-ab121c5b02ae}</Project>
-      <Name>TCPConnectionAPIServer%28C-sharp%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TCPConnectionAPIClientModule%28C-sharp%29\TCPConnectionAPIClientModule%28C-sharp%29.csproj">
       <Project>{266def97-e3a7-4b60-b8fd-4c1c8e35833b}</Project>

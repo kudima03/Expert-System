@@ -110,15 +110,13 @@ namespace TCPConnectionAPI_C_sharp_
         public bool UnbanClientsWhere(Func<Client, bool> comparer)
         {
             var buf = dbContext.FindClientsWhere(comparer);
-            if (buf == null) return false;
+            if (buf.Count == 0) return false;
             else
             {
                 foreach (var item in buf)
                 {
-                    if (item.UserStatus == Status.Banned)
-                    {
-                        item.UserStatus = Status.NotBanned;
-                    }
+                    item.UserStatus = Status.NotBanned;
+                    dbContext.UpdateClient(item);
                 }
                 return true;
             }
@@ -127,15 +125,13 @@ namespace TCPConnectionAPI_C_sharp_
         public bool UnbanExpertsWhere(Func<Expert, bool> comparer)
         {
             var buf = dbContext.FindExpertsWhere(comparer);
-            if (buf == null) return false;
+            if (buf.Count == 0) return false;
             else
             {
                 foreach (var item in buf)
                 {
-                    if (item.UserStatus == Status.Banned)
-                    {
-                        item.UserStatus = Status.NotBanned;
-                    }
+                    item.UserStatus = Status.NotBanned;
+                    dbContext.UpdateExpert(item);
                 }
                 return true;
             }

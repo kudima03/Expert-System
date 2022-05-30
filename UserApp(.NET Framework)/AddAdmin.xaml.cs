@@ -29,7 +29,34 @@ namespace UserApp_.NET_Framework_
 
         private void AddAdmin_Click(object sender, RoutedEventArgs e)
         {
-
+            if (passwordInputBox.Text != passwordInputBoxRepeat.Text)
+            {
+                MessageBox.Show("Error!");
+            }
+            else
+            {
+                var answer = module.RegisterNewAdmin(new DatabaseEntities.Admin(loginInputBox.Text, passwordInputBox.Text));
+                switch (answer)
+                {
+                    case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Successfully:
+                        {
+                            MessageBox.Show("Успешно!");
+                            break;
+                        }
+                    case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Error:
+                        {
+                            MessageBox.Show("Ошибка добавления!");
+                            break;
+                        }
+                    case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.UnknownCommand:
+                        {
+                            MessageBox.Show("Ошибка добавления!");
+                            break;
+                        }
+                    default:
+                        break;
+                }
+            }
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)

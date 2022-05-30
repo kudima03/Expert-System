@@ -27,6 +27,15 @@ namespace UserApp_.NET_Framework_
             InitializeComponent();
         }
 
+        private void LoginInput_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (isEmpty)
+            {
+                LoginInput.Text = "";
+                isEmpty = false;
+            }
+        }
+
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -54,15 +63,6 @@ namespace UserApp_.NET_Framework_
                     }
                 default:
                     break;
-            }
-        }
-
-        private void LoginInput_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (isEmpty)
-            {
-                LoginInput.Text = "";
-                isEmpty = false;
             }
         }
     }

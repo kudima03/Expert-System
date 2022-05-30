@@ -13,8 +13,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="60"></RowDefinition>
-            <RowDefinition Height="70"></RowDefinition>
-            <RowDefinition MinHeight="120"></RowDefinition>
+            <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition MinHeight="150"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -25,8 +25,23 @@
             <ColumnDefinition MaxWidth="80"></ColumnDefinition>
             <ColumnDefinition MaxWidth="20"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" FontWeight="Bold" Foreground="White" FontSize="35">Поиск эксперта</TextBlock>
-        <TextBox PreviewMouseDown="ExpertLoginInput_PreviewMouseDown"  Style="{DynamicResource TextBoxStyleInput}" FontSize="16" MinWidth="340" HorizontalAlignment="Left" VerticalAlignment="Center" MinHeight="40" Name="ExpertLoginInput" Grid.Row="2" Grid.Column="2" Padding="3 5" Text="Введите логин" Background="White"></TextBox>
+        <Menu Style="{DynamicResource MenuStyle}" HorizontalAlignment="Left" MaxWidth="250" Height="18" Grid.Row="1" Grid.Column="2" Name="MainMenuFind" Margin="0,60,0,70" Grid.RowSpan="2" Width="122">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <MenuItem Header="Категория поиска..."  Style="{DynamicResource MenuItemStyle}" Name="TopMenuItem">
+                <MenuItem Cursor="Hand" Margin="0 4 0 0" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Поиск по логину" Name="FindByLogin" Click="FindByLogin_Click">
+
+                </MenuItem>
+                <MenuItem Cursor="Hand" Margin="0 4 0 0" Padding="6 2" Style="{DynamicResource MenuItemStyle}" Header="Вывод всех данных" Name="ShowAll" Click="ShowAll_Click">
+
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" FontWeight="Bold" Foreground="White" FontSize="35">Поиск эксперта</TextBlock>
+        <TextBox Margin="0 20 0 0" PreviewMouseDown="ExpertLoginInput_PreviewMouseDown"  Style="{DynamicResource TextBoxStyleInput}" FontSize="16" MinWidth="340" HorizontalAlignment="Left" VerticalAlignment="Center" MinHeight="40" Name="ExpertLoginInput" Grid.Row="2" Grid.Column="2" Padding="3 5" Text="Введите логин" Background="White"></TextBox>
         <Button Style="{DynamicResource ButtonStyleSubmit}" MaxHeight="40" Grid.Row="2" Grid.Column="3" MaxWidth="20" Click="FindExpert_Click" Cursor="Hand" Background="White" Content="Найти" MinWidth="80" BorderBrush="White"/>
         <StackPanel Grid.Row="3" Grid.Column="2" Margin="0 0 0 0" Orientation="Vertical" MinWidth="340" HorizontalAlignment="Left">
             <StackPanel>
@@ -39,7 +54,7 @@
                         <ColumnDefinition Width="100"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Image Margin="0 0 2 0" Grid.Column="0" Grid.Row="0" Source="Resources/defaultPhoto.png" Name="ExpertImage"/>
+                    <Image Name="ExpertImage" Margin="0 0 2 0" Grid.Column="0" Grid.Row="0" Source="Resources/defaultPhoto.png"/>
                     <ListBox Grid.Row="0" Grid.Column="1">
                         <ListBoxItem>
                             <StackPanel Orientation="Horizontal">
@@ -67,6 +82,10 @@
                         </ListBoxItem>
                     </ListBox>
                 </Grid>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10">
+                <Button Name="LeftArrow" Height="25" Width="25" Margin="0 0 10 0" Style="{DynamicResource ButtonLeftRight}" Content="🠘" Click="LeftArrow_Click"></Button>
+                <Button Name="RightArrow" Height="25" Width="25" Style="{DynamicResource ButtonLeftRight}" Content="🠚" Click="RightArrow_Click"></Button>
             </StackPanel>
         </StackPanel>
         <Button Style= "{DynamicResource ButtonStyleGoBack}" Grid.Column="1" Grid.Row="3" Cursor="Hand" FontSize="40" Foreground="White" Content="«" Name="GoBack" Click="GoBack_Click" RenderTransformOrigin="0.5,0.5" MaxHeight="50" MaxWidth="30" Margin="0,68,0,0" Grid.RowSpan="2">

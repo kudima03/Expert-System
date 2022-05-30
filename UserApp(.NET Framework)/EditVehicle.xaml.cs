@@ -1,6 +1,8 @@
-﻿using Microsoft.Win32;
+﻿using ClassLibraryForTCPConnectionAPI_C_sharp_;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -20,7 +22,7 @@ namespace UserApp_.NET_Framework_
     /// <summary>
     /// Логика взаимодействия для EditVehicle.xaml
     /// </summary>
-public partial class EditVehicle : Window
+    public partial class EditVehicle : Window
     {
         string fileName;
         int counter = 0;
@@ -30,19 +32,45 @@ public partial class EditVehicle : Window
         List<DatabaseEntities.Vehicle> vehicles;
         public EditVehicle(IAdminAccess module)
         {
-            fileName = "defaultPhoto.png";
+            fileName = ConfigurationManager.AppSettings.Get("defaultPhotoPath");
             choosenParam = ParamToFind.Color;
             this.module = module;
             vehicles = module.GetAllVehicles();
             InitializeComponent();
-            Show(vehicles[0]);
+            if (vehicles.Count == 0)
+            {
+                MessageBox.Show("Нет данных!");
+            }
+            else
+                Show(vehicles[0]);
         }
 
         private void SaveVehicle_Click(object sender, RoutedEventArgs e)
         {
+            AnswerFromServer answer = AnswerFromServer.Successfully;
             foreach (var item in vehicles)
             {
-                module.ModifyVehicle(item);
+                if (module.ModifyVehicle(item) == AnswerFromServer.Error)
+                {
+                    answer = AnswerFromServer.Error;
+                }
+            }
+            switch (answer)
+            {
+                case AnswerFromServer.Successfully:
+                    {
+                        MessageBox.Show("Успешно");
+                        break;
+                    }
+                case AnswerFromServer.Error:
+                    {
+                        MessageBox.Show("Ошибка обновления");
+                        break;
+                    }
+                case AnswerFromServer.UnknownCommand:
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -56,12 +84,13 @@ public partial class EditVehicle : Window
             {
                 VehicleImage.Source = App.ConvertToBitmapImage(vehicle.Photo);
                 VehicleModel.Text = vehicle.Model;
-                VehicleTotalRate.Text = vehicle.TotalRate.ToString();
+                VehicleTotalRate.Text = Math.Round(vehicle.TotalRate, 3).ToString();
                 VehicleRegNum.Text = vehicle.RegistrationNumber.ToString();
                 VehicleDealer.Text = vehicle.Dealer;
                 VehicleColor.Text = vehicle.Colour;
             }
         }
+
         private void NewVehicle(DatabaseEntities.Vehicle vehicle)
         {
             if (vehicle == null)
@@ -72,12 +101,12 @@ public partial class EditVehicle : Window
             {
                 vehicle.Photo = new Bitmap(fileName);
                 vehicle.Model = VehicleModel.Text;
-                vehicle.TotalRate = float.Parse(VehicleTotalRate.Text);
                 vehicle.RegistrationNumber = VehicleRegNum.Text;
                 vehicle.Dealer = VehicleDealer.Text;
                 vehicle.Colour = VehicleColor.Text;
             }
         }
+
         private void FindVehicle_Click(object sender, RoutedEventArgs e)
         {
             vehicles.Clear();
@@ -129,10 +158,12 @@ public partial class EditVehicle : Window
                 Show(vehicles[0]);
             }
         }
+
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
+
         private void LeftArrow_Click(object sender, RoutedEventArgs e)
         {
             if (vehicles.Count == 0)
@@ -158,6 +189,10 @@ public partial class EditVehicle : Window
             if (vehicles.Count == 0)
             {
                 MessageBox.Show("Не найдено!");
+            }
+            if (vehicles.Count == 1)
+            {
+                Show(vehicles[counter]);
             }
             else
             {
@@ -235,6 +270,7 @@ public partial class EditVehicle : Window
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             NewVehicle(vehicles[counter]);
+            MessageBox.Show("Успешно!");
         }
     }
 }

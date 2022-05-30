@@ -11,18 +11,18 @@
     </Window.Background>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition MaxHeight="60"></RowDefinition>
+            <RowDefinition MaxHeight="60" Height="34*"></RowDefinition>
             <RowDefinition Height="70"></RowDefinition>
-            <RowDefinition MinHeight="330"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition MinHeight="330" Height="362*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition MinWidth="360"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" FontWeight="Bold" Foreground="White" FontSize="25">Тест</TextBlock>
-        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" FontWeight="Bold" Foreground="White" FontSize="25" Margin="154.8,0.6,155.2,35.8" Height="34" Grid.Row="1" Width="50">Тест</TextBlock>
+        <StackPanel Grid.Row="2" Orientation="Vertical" Grid.ColumnSpan="2" Margin="67,1.2,0.2,0.6">
             <Line X1="0" Y1="0" X2="360" Y2="0" Stroke="White" Height="1"></Line>
             <StackPanel Orientation="Horizontal" Margin="0 5">
                 <TextBlock Text="Проведённый вами теоретический анализ" TextWrapping="Wrap" Width="140" Foreground="White"></TextBlock>
@@ -99,10 +99,12 @@
                 </StackPanel>
             </StackPanel>
             <Line Margin="0 5" X1="0" Y1="0" X2="360" Y2="0" Stroke="White" Height="1"></Line>
+            <Label Content="Оцените свой уровень компетенции по шкале от 1 до 10:" Foreground="White" Margin="0,0,33,0"/>
+            <TextBox x:Name="SelfRateBox" Height="24" TextWrapping="Wrap" Text="&#xD;&#xA;" Margin="0,0,282,0"/>
 
-            <Button Width="80" Height="30" Margin="0 10 0 0" Content="Отправить" Style="{DynamicResource ButtonStyleSubmit}" Click="Button_Click"></Button>
+            <Button Width="80" Height="30" Margin="140,10,140,0" Content="Отправить" Style="{DynamicResource ButtonStyleSubmit}" Click="Button_Click"/>
         </StackPanel>
-        <Button Style= "{DynamicResource ButtonStyleGoBack}" Grid.Column="0" Grid.Row="2" Cursor="Hand" FontSize="40" Foreground="White" Content="«" Name="GoBack" Click="GoBack_Click" RenderTransformOrigin="0.5,0.5" MaxHeight="50" MaxWidth="30" Margin="0,286,0,0" Grid.RowSpan="2">
+        <Button Style= "{DynamicResource ButtonStyleGoBack}" Grid.Column="0" Grid.Row="2" Cursor="Hand" FontSize="40" Foreground="White" Content="«" Name="GoBack" Click="GoBack_Click" RenderTransformOrigin="0.5,0.5" MaxHeight="50" MaxWidth="30" Margin="0,287.2,0.2,-0.6" Grid.RowSpan="2">
             <Button.Background>
                 <SolidColorBrush Color="Transparent"></SolidColorBrush>
             </Button.Background>
@@ -110,5 +112,8 @@
                 <SolidColorBrush Color="Transparent"></SolidColorBrush>
             </Button.BorderBrush>
         </Button>
+        <Label Content="Высоко" FontWeight="Bold" Foreground="White" FontSize="10" Grid.Column="1" HorizontalAlignment="Left" Margin="154.8,44.6,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50" Height="24"/>
+        <Label Content="Средне" FontWeight="Bold" Foreground="White" FontSize="10" Grid.Column="1" HorizontalAlignment="Left" Margin="232.8,44.6,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50" Height="24"/>
+        <Label Content="Низко" FontWeight="Bold" Foreground="White" FontSize="10" Grid.Column="1" HorizontalAlignment="Left" Margin="315.8,44.6,0,0" Grid.Row="1" VerticalAlignment="Top" Width="40" RenderTransformOrigin="0.2,0.475" Height="24"/>
     </Grid>
 </Window>

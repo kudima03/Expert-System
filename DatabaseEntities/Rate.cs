@@ -19,18 +19,21 @@ namespace DatabaseEntities
 
         public double Value { get; set; }
 
+        public int ExpertId { get; set; }
+
+        public int VehicleId { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual Expert Expert { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Vehicle> Vehicle { get; set; }
+        public virtual Vehicle Vehicle { get; set; }
 
         public virtual DateTime TimeOfCommit { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Rate()
         {
-            this.Vehicle = new HashSet<Vehicle>();
         }
 
         public Rate(double value) : this()

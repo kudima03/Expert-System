@@ -154,9 +154,9 @@ namespace TCPConnectionAPI_C_sharp_
                 Console.WriteLine("Пользователь отключился");
                 return;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("Возникла ошибка при работе с клиентом");
+                Console.WriteLine(ex.Message);
                 return;
             }
         }
@@ -194,6 +194,11 @@ namespace TCPConnectionAPI_C_sharp_
                             {
                                 var param = _protocol.ReceiveString(user.ConnectionSocket);
                                 _protocol.SendCollection(clientProtocol.FindVehiclesWhere(c => c.RegistrationNumber == param), user.ConnectionSocket);
+                                break;
+                            }
+                        case CommandsToServer.GetAllVehicles:
+                            {
+                                _protocol.SendCollection(clientProtocol.FindVehiclesWhere(c => c != null), user.ConnectionSocket);
                                 break;
                             }
                         case CommandsToServer.FindVehiclesByRate:

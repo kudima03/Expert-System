@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace UserApp_.NET_Framework_
         private ClientConnectionModule module;
         public ExpertRegistration(ClientConnectionModule module)
         {
-            fileName = "defaultPhoto.png";
+            fileName = ConfigurationManager.AppSettings.Get("defaultPhotoPath");
             this.module = module;
             InitializeComponent();
         }
@@ -52,7 +53,10 @@ namespace UserApp_.NET_Framework_
                             break;
                         }
                     case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.Error:
-                        break;
+                        {
+                            MessageBox.Show("Ошибка!");
+                            break;
+                        }
                     case ClassLibraryForTCPConnectionAPI_C_sharp_.AnswerFromServer.UnknownCommand:
                         break;
                     default:

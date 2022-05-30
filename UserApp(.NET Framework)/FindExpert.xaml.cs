@@ -19,27 +19,93 @@ namespace UserApp_.NET_Framework_
     /// </summary>
     public partial class FindExpert : Window
     {
+        int counter = 0;
+        ParamToFindUser choosenParam;
         bool isEmpty = true;
         private IAdminAccess module;
+        List<DatabaseEntities.Expert> experts;
+        DatabaseEntities.Expert expertBuffer;
         public FindExpert(IAdminAccess module)
         {
+            choosenParam = ParamToFindUser.Login;
             this.module = module;
+            experts = module.GetAllExperts();
             InitializeComponent();
+            if (experts.Count == 0)
+                MessageBox.Show("Нет данных!");
+            else
+                Show(experts[0]);
         }
-
-        private void FindExpert_Click(object sender, RoutedEventArgs e)
+        private void Show(DatabaseEntities.Expert expert)
         {
-            var expert = module.FindExpertByLogin(ExpertLogin.Text);
-            ExpertLogin.Text = expert.Login;
-            ExpertStatus.Text = expert.UserStatus.ToString();
-            ExpertImage.Source = App.ConvertToBitmapImage(expert.Photo);
-            if (expert.IsOnline == true)
+            if (expert == null)
             {
-                ExpertLastOnline.Text = "Сейчас онлайн";
+                MessageBox.Show("Не найдено!");
             }
             else
             {
-                ExpertStatus.Text = expert.LastOnline.ToString();
+                ExpertImage.Source = App.ConvertToBitmapImage(expert.Photo);
+                ExpertLogin.Text = expert.Login;
+                ExpertStatus.Text = expert.UserStatus.ToString();
+                ExpertTotalRate.Text = Math.Round(expert.RateWeight, 2).ToString();
+                if (expert.IsOnline)
+                {
+                    ExpertLastOnline.Text = "В сети";
+                }
+                else
+                {
+                    switch (expert.UserStatus)
+                    {
+                        case DatabaseEntities.Status.Banned:
+                            {
+                                ExpertStatus.Text = "Заблокирован";
+                                break;
+                            }
+                        case DatabaseEntities.Status.NotBanned:
+                            {
+                                ExpertStatus.Text = "Без оганичений";
+                                break;
+                            }
+                        default:
+                            {
+                                ExpertStatus.Text = expert.UserStatus.ToString();
+                                break;
+                            }
+                    }
+
+                }
+            }
+        }
+        private void FindExpert_Click(object sender, RoutedEventArgs e)
+        {
+            experts.Clear();
+            switch (choosenParam)
+            {
+                case ParamToFindUser.Login:
+                    {
+                        expertBuffer = module.FindExpertByLogin(ExpertLoginInput.Text);
+                        experts.Add(expertBuffer);
+                        break;
+                    }
+                case ParamToFindUser.None:
+                    {
+                        experts = module.GetAllExperts();
+                        break;
+                    }
+                default:
+                    {
+                        MessageBox.Show("Повторите попытку!");
+                        break;
+                    }
+            }
+
+            if (experts.Count == 0)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else
+            {
+                Show(experts[0]);
             }
         }
 
@@ -54,6 +120,62 @@ namespace UserApp_.NET_Framework_
             {
                 ExpertLoginInput.Text = "";
                 isEmpty = false;
+            }
+        }
+
+        private void FindByLogin_Click(object sender, RoutedEventArgs e)
+        {
+            choosenParam = ParamToFindUser.Login;
+            TopMenuItem.Header = "Поиск по логину";
+        }
+
+        private void ShowAll_Click(object sender, RoutedEventArgs e)
+        {
+            choosenParam = ParamToFindUser.None;
+            TopMenuItem.Header = "Показать всё";
+        }
+
+        private void LeftArrow_Click(object sender, RoutedEventArgs e)
+        {
+            if (experts.Count == 0)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else
+            {
+                if (counter == 0)
+                {
+                    Show(experts[0]);
+                }
+                else
+                {
+                    counter--;
+                    Show(experts[counter]);
+                }
+            }
+        }
+
+        private void RightArrow_Click(object sender, RoutedEventArgs e)
+        {
+            if (experts.Count == 0)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+            else if (experts.Count == 1)
+            {
+                Show(experts[counter]);
+            }
+            else
+            {
+                if (counter + 1 == experts.Count)
+                {
+                    Show(experts[counter]);
+                }
+                else
+                {
+                    counter++;
+                    Show(experts[counter]);
+                }
             }
         }
     }

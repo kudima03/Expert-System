@@ -13,8 +13,8 @@ namespace TCPConnectionAPI_C_sharp_
 
         public bool Rate(Vehicle entity, Expert expert, float rate)
         {
-            var ratedObj = expertMethod.Rate(entity, expert, rate) as Vehicle;
-            return DBconnection.UpdateVehicle(ratedObj);
+            expertMethod.Rate(ref entity, expert, rate);
+            return DBconnection.UpdateVehicle(entity);
         }
 
         public List<Vehicle> FindVehiclesWhere(Func<Vehicle, bool> comparer)

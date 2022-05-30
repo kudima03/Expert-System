@@ -70,6 +70,13 @@
                     <ListBox Grid.Row="0" Grid.Column="1">
                         <ListBoxItem Margin="0 3">
                             <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Дилер: " Margin="0 0 10 0"/>
+                                <TextBlock Text="____" x:Name="VehicleDealer"/>
+
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Модель: " Margin="0 0 10 0"></TextBlock>
                                 <TextBlock Text="____" Name="VehicleModel"></TextBlock>
                             </StackPanel>
@@ -82,20 +89,15 @@
                         </ListBoxItem>
                         <ListBoxItem Margin="0 3">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Дилер: " Margin="0 0 10 0"></TextBlock>
-                                <TextBlock Text="____" Name="VehicleDealer"></TextBlock>
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem Margin="0 3">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Рейтинг: " Margin="0 0 10 0"></TextBlock>
-                                <TextBlock Text="____" Name="VehicleTotalRate"></TextBlock>
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem Margin="0 3">
-                            <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Рег. номер: " Margin="0 0 10 0"></TextBlock>
                                 <TextBlock Text="____" Name="VehicleRegNum"></TextBlock>
+
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem Margin="0 3">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Общая оценка: " Margin="0 0 10 0"></TextBlock>
+                                <TextBlock Text="____" Name="VehicleTotalRate"></TextBlock>
                             </StackPanel>
                         </ListBoxItem>
                     </ListBox>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace UserApp_.NET_Framework_
         private IAdminAccess module;
         public AddVehicle(IAdminAccess module)
         {
-            fileName = "defaultPhoto.png";
+            fileName = ConfigurationManager.AppSettings.Get("defaultPhotoPath");
             this.module = module;
             InitializeComponent();
         }
@@ -83,10 +84,7 @@ namespace UserApp_.NET_Framework_
             {
                 RegistrationNumber.Text = "Введите рег. номер";
             }
-           /* if (TotalRate.Text == "")
-            {
-                TotalRate.Text = "Введите рейтинг";
-            }*/
+
         }
 
         private void AddPhoto_Click(object sender, RoutedEventArgs e)
@@ -125,10 +123,6 @@ namespace UserApp_.NET_Framework_
             {
                 RegistrationNumber.Text = "Введите рег. номер";
             }
-            /*if (TotalRate.Text == "")
-            {
-                TotalRate.Text = "Введите рейтинг";
-            }*/
         }
 
         private void Colour_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -154,10 +148,6 @@ namespace UserApp_.NET_Framework_
             {
                 RegistrationNumber.Text = "Введите рег. номер";
             }
-            /*if (TotalRate.Text == "")
-            {
-                TotalRate.Text = "Введите рейтинг";
-            }*/
         }
 
         private void RegistrationNumber_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -183,39 +173,7 @@ namespace UserApp_.NET_Framework_
             {
                 Dealer.Text = "Введите дилера";
             }
-          /*  if (TotalRate.Text == "")
-            {
-                TotalRate.Text = "Введите рейтинг";
-            }*/
-        }
 
-      /*  private void TotalRate_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (isEmptyFive)
-            {
-                TotalRate.Text = "";
-                isEmptyFive = false;
-            }
-            if (TotalRate.Text == "Введите рейтинг")
-            {
-                TotalRate.Text = "";
-            }
-            if (Model.Text == "")
-            {
-                Model.Text = "Введите модель";
-            }
-            if (Colour.Text == "")
-            {
-                Colour.Text = "Введите цвет";
-            }
-            if (Dealer.Text == "")
-            {
-                Dealer.Text = "Введите дилера";
-            }
-            if (RegistrationNumber.Text == "")
-            {
-                RegistrationNumber.Text = "Введите рег. номер";
-            }
-        }*/
+        }
     }
 }

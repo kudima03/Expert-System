@@ -58,6 +58,17 @@ namespace TCPConnectionAPI_C_sharp_
             DBconnection.ExpertSet.Add(newExpert);
             DBconnection.SaveChanges();
             DBconnection.Configuration.ProxyCreationEnabled = false;
+            var expertBuf = FindExpertsWhere(c => c != null);
+            double competenceSum = 0;
+            foreach (var item in expertBuf)
+            {
+                competenceSum += item.RateWeight;
+            }
+            foreach (var item in expertBuf)
+            {
+                item.RateWeight = item.RateWeight / competenceSum;
+                UpdateExpert(item);
+            }
             return newExpert.Id;
         }
 
@@ -147,11 +158,11 @@ namespace TCPConnectionAPI_C_sharp_
 
         virtual public bool UpdateVehicle(Vehicle newVersion)
         {
-            DBconnection.Configuration.ProxyCreationEnabled = true;
-            var buf = DBconnection.VehicleSet.Find(newVersion.Id);
+            var buf = FindVehiclesWhere(c=>c.Id == newVersion.Id)[0];
             if (buf == null) return false;
             else
             {
+                DBconnection.Configuration.ProxyCreationEnabled = true;
                 buf.Id = newVersion.Id;
                 buf.Dealer = newVersion.Dealer;
                 buf.Colour = newVersion.Colour;
